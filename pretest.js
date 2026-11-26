@@ -1,6 +1,6 @@
 /* Coach Sam Pre-Test Shared Module (v3.5) */
 (function () {
-  const PRETEST_ENDPOINT = 'https://script.google.com/macros/s/AKfycby3uebh--Jyxp1lnwDE55xc3IfcvyZB2AoXIdTfmGWCCFLESgd1I3enYGbSnQxiTpah/exec';
+  const PRETEST_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxc6LN50Rof6Rzuo5fSEKImouUS3QffOjMB7ipIBtNYDN1LQCsFLx5ndrxyxukLs6Co/exec';
   const PRETEST_GROUPS={
 project:[
 ['วงจรโครงการพัฒนาซอฟต์แวร์โดยทั่วไปเริ่มจากอะไร',['วางแผนโครงการ','ปิดโครงการ','ส่งมอบระบบ','บำรุงรักษา']],
