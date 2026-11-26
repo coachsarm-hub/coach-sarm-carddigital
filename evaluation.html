@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>แบบประเมินหลักสูตรและวิทยากร | Coach Sam</title>
+<meta name="description" content="แบบประเมินความพึงพอใจด้านเนื้อหาหลักสูตร วิทยากร และการนำไปประยุกต์ใช้ โดย Coach Sam">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0c1c35">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="แบบประเมินหลักสูตรและวิทยากร | Coach Sam">
+<meta property="og:description" content="ขอเชิญผู้เข้าอบรมร่วมประเมินความพึงพอใจเพื่อพัฒนาหลักสูตรและการถ่ายทอดความรู้ (ใช้เวลา 15 วินาที)">
+<meta property="og:image" content="https://coachsarm-hub.github.io/coach-sarm-carddigital/images/og-image.jpg">
+<style>
+:root{--navy:#0c1c35;--navy2:#142b4c;--gold:#c7a55b;--gold2:#ead9a9;--ink:#172235;--muted:#647087;--line:#e4e8ee;--bg:#f5f7fa;--ok:#067647}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;line-height:1.68;background:var(--bg)}
+a{color:inherit}
+.topbar{background:var(--navy);color:#edf1f7;font-size:.82rem}
+.wrap{width:min(1160px,calc(100% - 36px));margin:auto}
+.topbar .wrap{display:flex;justify-content:space-between;gap:1rem;padding:.42rem 0}
+.nav{position:sticky;top:0;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);z-index:20;border-bottom:1px solid #edf0f3}
+.navin{height:72px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.brand{font:700 1.12rem Georgia,'Times New Roman',serif;letter-spacing:.08em;color:var(--navy);text-decoration:none}
+.brand small{display:block;font:500 .62rem system-ui;letter-spacing:.21em;color:var(--gold);margin-top:-3px}
+.nav-back{border:1px solid #cbd3de;border-radius:6px;padding:.5rem .9rem;text-decoration:none;font-size:.86rem;font-weight:650;color:var(--navy);background:#fff}
+.nav-back:hover{border-color:var(--gold)}
+.page{padding:2rem 0 4.5rem}
+.eval-wrap{width:min(760px,calc(100% - 28px));margin:auto}
+.card{background:#fff;border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:14px;padding:clamp(1.25rem,4vw,2.2rem);box-shadow:0 16px 46px #0c1c350d}
+.kicker{color:#98752d;text-transform:uppercase;letter-spacing:.14em;font-size:.73rem;font-weight:750}
+h1{font:500 clamp(1.55rem,3.6vw,2.15rem)/1.28 Georgia,'Times New Roman',serif;color:var(--navy);margin:.3rem 0 .45rem}
+.lead{color:var(--muted);margin:0 0 1.35rem;font-size:.94rem}
+.step-title{font-size:.95rem;font-weight:700;color:var(--navy);margin:1.35rem 0 .55rem;display:flex;align-items:center;gap:.45rem}
+.step-num{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:.75rem}
+.chip-group{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:.75rem}
+.chip{border:1px solid #cbd3de;background:#fff;color:#344159;border-radius:999px;padding:.45rem .88rem;font:inherit;font-size:.84rem;font-weight:600;cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--gold)}
+.chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.field{display:flex;flex-direction:column;gap:.28rem;margin-bottom:.85rem}
+.field label{font-size:.84rem;font-weight:650;color:var(--navy)}
+.field input,.field select,.field textarea{font:inherit;font-size:.92rem;border:1px solid #bbc4d0;border-radius:8px;padding:.65rem .78rem;background:#fff;min-width:0}
+.field input:focus,.field select:focus,.field textarea:focus{outline:3px solid #ead9a9;border-color:#98752e}
+.rating-box{border:1px solid var(--line);border-radius:10px;padding:.95rem 1.05rem;margin-bottom:.8rem;background:#fafbfd}
+.rating-head{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-bottom:.55rem}
+.rating-title{font-weight:700;font-size:.92rem;color:var(--navy)}
+.rating-hint{font-size:.78rem;color:#98752d;font-weight:650}
+.stars{display:grid;grid-template-columns:repeat(5,1fr);gap:.45rem}
+.star-btn{border:1px solid #cbd3de;background:#fff;border-radius:8px;padding:.55rem .25rem;font:inherit;font-size:.86rem;font-weight:700;color:#46536a;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.1rem;transition:.15s}
+.star-btn small{font-size:.66rem;font-weight:500;color:var(--muted)}
+.star-btn:hover{border-color:var(--gold);background:#fffdf8}
+.star-btn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--gold2)}
+.star-btn[aria-pressed="true"] small{color:#cfd9e8}
+.submit-btn{width:100%;background:var(--navy);color:#fff;border:0;border-radius:9px;padding:.85rem 1.2rem;font:inherit;font-size:1rem;font-weight:700;cursor:pointer;margin-top:.5rem;transition:.2s}
+.submit-btn:hover{background:var(--navy2)}
+.submit-btn:disabled{opacity:.6;cursor:wait}
+.status-msg{min-height:1.5em;margin-top:.8rem;font-size:.88rem;color:#8a4c00;text-align:center}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(138,76,0,.25);border-top-color:#8a4c00;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px;margin-right:.4rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.success-box{text-align:center;padding:1.5rem .5rem}
+.success-box h2{color:var(--ok);margin:.3rem 0}
+.success-box p{color:var(--muted);margin-bottom:1.4rem}
+.sbtn{border:1px solid #d6c28e;background:#fff;color:var(--navy);border-radius:6px;padding:.5rem .9rem;font:inherit;font-size:.86rem;font-weight:650;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem}
+.sbtn.line{background:#06c755;color:#fff;border-color:#06c755}
+.footer{background:#081426;color:#aab6c5;padding:1.3rem 0;font-size:.78rem}
+.footer .wrap{display:flex;justify-content:space-between;gap:1rem}
+@media(max-width:600px){.topbar span:first-child{display:none}.star-btn small{display:none}.footer .wrap{display:block;text-align:center}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap"><span>COACH SAM · DIGITAL &amp; AI ACADEMY</span><span>วิทยากรและที่ปรึกษาด้านเทคโนโลยีดิจิทัล</span></div></div>
+<header class="nav"><nav class="wrap navin" aria-label="เมนูหลัก"><a class="brand" href="index.html#home">COACH SAM<small>DIGITAL &amp; AI ACADEMY</small></a><a class="nav-back" href="index.html#courses">← กลับหน้าหลัก</a></nav></header>
+
+<main class="page">
+  <div class="eval-wrap">
+    <article class="card">
+      <div class="kicker">Course &amp; Speaker Evaluation</div>
+      <h1>แบบประเมินหลักสูตร วิทยากร และเนื้อหา</h1>
+      <p class="lead">ความคิดเห็นของท่านมีคุณค่าอย่างยิ่งในการพัฒนาหลักสูตรและการถ่ายทอดความรู้ (ใช้เวลาประเมินเพียง 15 วินาที)</p>
+
+      <form id="evalForm">
+        <div class="step-title"><span class="step-num">1</span>หลักสูตรที่เข้าอบรม</div>
+        <div class="chip-group" id="groupChips" role="group" aria-label="กลุ่มหลักสูตร">
+          <button class="chip" type="button" data-group="advanced" aria-pressed="true">ระดับสูง (11)</button>
+          <button class="chip" type="button" data-group="intermediate" aria-pressed="false">ระดับกลาง (7)</button>
+          <button class="chip" type="button" data-group="workplace" aria-pressed="false">สำหรับองค์กร (3)</button>
+          <button class="chip" type="button" data-group="custom" aria-pressed="false">อื่นๆ / อบรมเฉพาะองค์กร</button>
+        </div>
+
+        <div class="field" id="courseSelectWrap">
+          <label for="courseSelect">เลือกหลักสูตร</label>
+          <select id="courseSelect" required></select>
+        </div>
+        <div class="field" id="customCourseWrap" hidden>
+          <label for="customCourseName">ระบุชื่อหลักสูตร / หัวข้อการอบรม</label>
+          <input id="customCourseName" type="text" maxlength="200" placeholder="เช่น อบรม AI สำหรับพนักงานองค์กร">
+        </div>
+
+        <div class="step-title"><span class="step-num">2</span>ให้คะแนนความพึงพอใจ (1 = ควรปรับปรุง, 5 = ดีมาก)</div>
+        <div id="ratingsContainer"></div>
+
+        <div class="step-title"><span class="step-num">3</span>ข้อเสนอแนะเพิ่มเติม (ไม่บังคับ)</div>
+        <div class="field">
+          <label for="comment">สิ่งที่ประทับใจ หรือข้อเสนอแนะเพื่อการพัฒนา</label>
+          <textarea id="comment" rows="3" maxlength="500" placeholder="พิมพ์ข้อเสนอแนะเพิ่มเติมได้ที่นี่ (เว้นว่างได้)"></textarea>
+        </div>
+        <div class="field">
+          <label for="reviewer">ชื่อผู้ประเมิน (ไม่บังคับ)</label>
+          <input id="reviewer" type="text" maxlength="120" placeholder="เว้นว่างได้ (บันทึกเป็นไม่ประสงค์ออกนาม)">
+        </div>
+
+        <button class="submit-btn" id="submitBtn" type="submit">ส่งแบบประเมิน</button>
+        <p class="status-msg" id="statusMsg" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="success-box" id="successBox" hidden>
+        <div style="font-size:2.6rem">⭐</div>
+        <h2>ขอบคุณสำหรับผลประเมินครับ!</h2>
+        <p>ข้อมูลความพึงพอใจและข้อเสนอแนะของท่านถูกบันทึกเรียบร้อยแล้ว</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center">
+          <a class="sbtn line" href="https://line.me/ti/p/mhdreWudvj" target="_blank" rel="noopener">เพิ่มเพื่อน LINE Coach Sam ↗</a>
+          <a class="sbtn" href="index.html#courses">ดูหลักสูตรอื่น</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</main>
+
+<footer class="footer"><div class="wrap"><span>© 2026 Coach Sam · Digital &amp; AI Academy</span><a href="index.html#home" style="color:var(--gold2);text-decoration:none">กลับหน้าหลัก ↑</a></div></footer>
+
+<script>
+const EVAL_ENDPOINT = 'https://script.google.com/macros/s/AKfycby3uebh--Jyxp1lnwDE55xc3IfcvyZB2AoXIdTfmGWCCFLESgd1I3enYGbSnQxiTpah/exec';
+const COURSES_BY_GROUP = {
+  advanced: [
+    { code: '0920014220601', name: 'การบริหารโครงการพัฒนาซอฟต์แวร์' },
+    { code: '10120014220115', name: 'AI Assisted Coding Fundamentals พัฒนานวัตกรรมดิจิทัล' },
+    { code: '0920224190208', name: 'การเขียนโปรแกรมประมวลผลภาพและเทคโนโลยีปัญญาประดิษฐ์' },
+    { code: '0920084220103', name: 'การพัฒนาเว็ปแอปพลิเคชัน ระดับ 1' },
+    { code: '0920084220104', name: 'การพัฒนาเว็ปแอปพลิเคชัน ระดับ 2' },
+    { code: '0920084220105', name: 'การพัฒนาเว็ปแอปพลิเคชัน ระดับ 3' },
+    { code: '0920224220118', name: 'การพัฒนา Web E-Comerce ร้านค้าออนไลน์' },
+    { code: '0920224220110', name: 'การสร้างแอพพลิเคชั่นเพื่อการท่องเที่ยว' },
+    { code: '0920014220305', name: 'การออกแบบประสบการณ์ผู้ใช้และส่วนติดต่อผู้ใช้ (UX-UI)' },
+    { code: '10120014220103', name: 'การพัฒนาโปรแกรม Web Application ด้วย React' },
+    { code: '10020084220605', name: 'โปรแกรมภาษา JavaScript สำหรับการพัฒนาเว็บไซต์' }
+  ],
+  intermediate: [
+    { code: '10120014220610', name: 'การประยุกต์ใช้ AI เพื่อเพิ่มประสิทธิภาพงานเอกสารและการสื่อสาร' },
+    { code: '2220017230213', name: 'Content Marketing และ การขายออนไลน์ด้วยเทคโนโลยีปัญญาประดิษฐ์ (AI)' },
+    { code: '50200172304104', name: 'การทำธุรกิจผ่านเครือข่ายออนไลน์' },
+    { code: '0920014220605', name: 'การวิเคราะห์ข้อมูลด้วยโปรแกรม Power BI' },
+    { code: '0920014220405', name: 'การวิเคราะห์ข้อมูลด้วย Excel และ Power BI' },
+    { code: '2220017320213', name: 'เทคโนโลยีปัญญาประดิษฐ์สำหรับธุรกิจท่องเที่ยวและบริการ (AI for Hospitality)' },
+    { code: '0920224220116', name: 'ยกระดับ การใช้ Google Application เพื่อธุรกิจ' }
+  ],
+  workplace: [
+    { code: '0920014220406', name: 'การใช้ Microsoft AI Skills for Everyone (สำหรับองค์กรและภาคธุรกิจ)' },
+    { code: '10120014220801', name: 'การใช้งาน Generative AI ในองค์กรและภาคธุรกิจ' },
+    { code: '10120014220504', name: 'กฎหมายดิจิทัลสำหรับผู้ใช้งานทั่วไป' }
+  ]
+};
+
+const DIMENSIONS = [
+  { key: 'contentScore', label: '📚 ด้านเนื้อหาหลักสูตรและเอกสารประกอบ' },
+  { key: 'speakerScore', label: '🎤 ด้านวิทยากรและการถ่ายทอด (Coach Sam)' },
+  { key: 'applyScore', label: '🛠️ ด้านการนำไปประยุกต์ใช้จริงในการทำงาน' },
+  { key: 'overallScore', label: '🏆 ความพึงพอใจโดยรวมต่อการอบรม' }
+];
+const LABELS = ['ควรปรับปรุง', 'พอใช้', 'ปานกลาง', 'ดี', 'ดีมาก'];
+const scores = { contentScore: 0, speakerScore: 0, applyScore: 0, overallScore: 0 };
+
+const ratingsContainer = document.getElementById('ratingsContainer');
+ratingsContainer.innerHTML = DIMENSIONS.map(d => `
+  <div class="rating-box" data-key="${d.key}">
+    <div class="rating-head">
+      <span class="rating-title">${d.label}</span>
+      <span class="rating-hint" id="hint-${d.key}">กรุณาเลือกคะแนน</span>
+    </div>
+    <div class="stars">
+      ${[1, 2, 3, 4, 5].map(n => `<button type="button" class="star-btn" data-val="${n}" aria-pressed="false"><span>${n} ★</span><small>${LABELS[n - 1]}</small></button>`).join('')}
+    </div>
+  </div>
+`).join('');
+
+ratingsContainer.addEventListener('click', e => {
+  const btn = e.target.closest('.star-btn');
+  if (!btn) return;
+  const box = btn.closest('.rating-box');
+  const key = box.dataset.key;
+  const val = Number(btn.dataset.val);
+  scores[key] = val;
+  box.querySelectorAll('.star-btn').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.val) === val)));
+  document.getElementById('hint-' + key).textContent = `${val} / 5 (${LABELS[val - 1]})`;
+});
+
+let activeGroup = 'advanced';
+const courseSelect = document.getElementById('courseSelect');
+const courseSelectWrap = document.getElementById('courseSelectWrap');
+const customCourseWrap = document.getElementById('customCourseWrap');
+const customCourseName = document.getElementById('customCourseName');
+
+function populateCourses(group) {
+  activeGroup = group;
+  document.querySelectorAll('#groupChips .chip').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.group === group)));
+  if (group === 'custom') {
+    courseSelectWrap.hidden = true;
+    courseSelect.required = false;
+    customCourseWrap.hidden = false;
+    customCourseName.required = true;
+    return;
+  }
+  courseSelectWrap.hidden = false;
+  courseSelect.required = true;
+  customCourseWrap.hidden = true;
+  customCourseName.required = false;
+  courseSelect.innerHTML = '';
+  (COURSES_BY_GROUP[group] || []).forEach(c => {
+    const o = document.createElement('option');
+    o.value = c.code;
+    o.textContent = `${c.code} · ${c.name}`;
+    o.dataset.name = c.name;
+    courseSelect.append(o);
+  });
+}
+
+document.querySelectorAll('#groupChips .chip').forEach(btn => {
+  btn.addEventListener('click', () => populateCourses(btn.dataset.group));
+});
+
+// Auto-select course if ?course=CODE is present
+const paramCode = new URLSearchParams(location.search).get('course');
+let preselected = false;
+if (paramCode) {
+  for (const grp of Object.keys(COURSES_BY_GROUP)) {
+    if (COURSES_BY_GROUP[grp].some(c => c.code === paramCode)) {
+      populateCourses(grp);
+      courseSelect.value = paramCode;
+      preselected = true;
+      break;
+    }
+  }
+}
+if (!preselected) populateCourses('advanced');
+
+document.getElementById('evalForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const statusEl = document.getElementById('statusMsg');
+  const submitBtn = document.getElementById('submitBtn');
+
+  if (!scores.contentScore || !scores.speakerScore || !scores.applyScore || !scores.overallScore) {
+    statusEl.textContent = 'กรุณาแตะให้คะแนนดาว (1–5) ให้ครบทั้ง 4 หัวข้อครับ';
+    return;
+  }
+
+  const reqId = (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2));
+  const selectedOpt = courseSelect.options[courseSelect.selectedIndex];
+
+  const payload = {
+    formType: 'eval',
+    responseMode: 'json',
+    requestId: reqId,
+    courseCode: activeGroup === 'custom' ? 'CUSTOM' : courseSelect.value,
+    courseName: activeGroup === 'custom' ? customCourseName.value.trim() : (selectedOpt ? selectedOpt.dataset.name : ''),
+    contentScore: scores.contentScore,
+    speakerScore: scores.speakerScore,
+    applyScore: scores.applyScore,
+    overallScore: scores.overallScore,
+    comment: document.getElementById('comment').value.trim(),
+    reviewer: document.getElementById('reviewer').value.trim()
+  };
+
+  submitBtn.disabled = true;
+  statusEl.innerHTML = '<span class="spinner" aria-hidden="true"></span>กำลังบันทึกแบบประเมิน…';
+  try {
+    const res = await fetch(EVAL_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+      redirect: 'follow'
+    });
+    const data = await res.json();
+    if (!data || !data.ok) throw new Error((data && data.message) || 'บันทึกไม่สำเร็จ');
+    document.getElementById('evalForm').hidden = true;
+    document.getElementById('successBox').hidden = false;
+    statusEl.textContent = '';
+  } catch (err) {
+    submitBtn.disabled = false;
+    statusEl.textContent = 'ไม่สามารถบันทึกได้: ' + (err.message || 'กรุณาลองใหม่อีกครั้ง');
+  }
+});
+</script>
+</body>
+</html>
