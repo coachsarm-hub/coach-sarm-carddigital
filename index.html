@@ -18,6 +18,11 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
 
+<!-- Performance: Preload LCP image (portrait) -->
+<link rel="preload" as="image" href="images/coach-sam-portrait.webp" type="image/webp">
+<link rel="dns-prefetch" href="//calendar.google.com">
+<link rel="preconnect" href="https://calendar.google.com" crossorigin>
+
 <!-- Open Graph / Facebook / LINE -->
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Coach Sam (สุทธิพจน์ ศรีแสนยงค์) | วิทยากรและที่ปรึกษาด้านเทคโนโลยีดิจิทัล และ AI">
@@ -433,7 +438,9 @@ document.getElementById('pretestContactForm').addEventListener('submit',event=>{
 });
 window.addEventListener('message',event=>{
   if(event.source!==pretestFrame.contentWindow)return;
-  if((!event.origin.endsWith('googleusercontent.com')&&!event.origin.endsWith('google.com'))||!event.data||event.data.requestId!==currentRequestId)return;
+  /* Accept messages from any Google origin (script.google.com, googleusercontent.com, etc.) */
+  const isGoogle=event.origin.endsWith('google.com')||event.origin.endsWith('googleusercontent.com')||event.origin==='null';
+  if(!isGoogle||!event.data||event.data.requestId!==currentRequestId)return;
   if(submitTimeout)clearTimeout(submitTimeout);
   document.getElementById('pretestSendButton').disabled=false;
   if(!event.data.ok){pretestStatus.textContent=event.data.message||'บันทึกผลไม่สำเร็จ กรุณาลองใหม่';return}
