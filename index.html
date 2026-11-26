@@ -671,7 +671,11 @@ courseCards().forEach(card=>{
  const benefits=(data.profile.benefits||[]).slice(0,3);
  const benefitsHtml=benefits.length?'<ul class="course-summary-list">'+benefits.map(b=>'<li>'+htmlSafe(b)+'</li>').join('')+'</ul>':'';
  const docsHtml=data.docs.map(d=>'<a class="course-link" target="_blank" rel="noopener" href="'+htmlSafe(d.href)+'">'+htmlSafe(d.label)+' ↗</a>').join('');
- box.innerHTML='<p class="course-summary-desc"><strong>หลักสูตรนี้คืออะไร:</strong> '+htmlSafe(summary)+'</p>'+benefitsHtml+'<div class="course-actions"><a class="course-details-link" href="courses/'+encodeURIComponent(data.code)+'.html" target="_blank" rel="noopener" aria-label="ดูรายละเอียดทั้งหมดหลักสูตร '+htmlSafe(data.title)+' ในหน้าใหม่"><span>ดูรายละเอียดทั้งหมด</span><span aria-hidden="true">↗</span></a>'+docsHtml+'</div>';
+ box.innerHTML='<p class="course-summary-desc"><strong>หลักสูตรนี้คืออะไร:</strong> '+htmlSafe(summary)+'</p>'+benefitsHtml+(docsHtml?'<div class="course-actions">'+docsHtml+'</div>':'');
+ const outerActions=card.querySelector('.course-main > .course-actions');
+ if(outerActions){
+  outerActions.innerHTML='<a class="course-details-link" href="courses/'+encodeURIComponent(data.code)+'.html" target="_blank" rel="noopener" aria-label="ดูรายละเอียดทั้งหมดหลักสูตร '+htmlSafe(data.title)+' ในหน้าใหม่"><span>ดูรายละเอียดทั้งหมด</span><span aria-hidden="true">↗</span></a>';
+ }
 });
 function renderCourseDetail(){
  const code=new URLSearchParams(location.search).get('course');if(!code)return;
