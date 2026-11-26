@@ -146,7 +146,7 @@
   <h2 id="pretestTitle">แบบทดสอบก่อนเรียน</h2><p id="pretestCode" class="pretest-code"></p>
   <div class="pretest-view" id="pretestQuizView"><p>เลือกคำตอบที่เหมาะสมที่สุดให้ครบทั้ง 10 ข้อ</p><form id="pretestQuizForm"><div id="pretestQuestions"></div><div class="pretest-actions"><button class="pretest-primary" type="submit">ส่งข้อสอบ</button></div></form></div>
   <div class="pretest-view" id="pretestContactView" hidden><p>กรอกข้อมูลเพื่อบันทึกผลและรับคะแนนประเมิน</p><form id="pretestContactForm"><div class="pretest-form-grid">
-   <label class="pretest-field full">ชื่อ-สกุล (ภาษาไทย)<input id="pretestName" name="fullNameTh" autocomplete="name" required maxlength="120"></label>
+   <label class="pretest-field full">ชื่อ-สกุล (ภาษาไทย หรือ อังกฤษ)<input id="pretestName" name="fullNameTh" autocomplete="name" required maxlength="120" placeholder="เช่น สุทธิพจน์ ศรีแสนยงค์ หรือ Suttiphod Sriseanyong"></label>
    <label class="pretest-field">อีเมล<input name="email" type="email" autocomplete="email" required maxlength="254"></label>
    <label class="pretest-field">Line ID<input name="lineId" autocomplete="off" required maxlength="100"></label>
    <label class="pretest-field">เบอร์โทร<input name="phone" type="tel" autocomplete="tel" inputmode="tel" required maxlength="30"></label>
@@ -433,7 +433,7 @@ document.getElementById('pretestContactForm').addEventListener('submit',event=>{
 });
 window.addEventListener('message',event=>{
   if(event.source!==pretestFrame.contentWindow)return;
-  if(!event.origin.endsWith('googleusercontent.com')||!event.data||event.data.requestId!==currentRequestId)return;
+  if((!event.origin.endsWith('googleusercontent.com')&&!event.origin.endsWith('google.com'))||!event.data||event.data.requestId!==currentRequestId)return;
   if(submitTimeout)clearTimeout(submitTimeout);
   document.getElementById('pretestSendButton').disabled=false;
   if(!event.data.ok){pretestStatus.textContent=event.data.message||'บันทึกผลไม่สำเร็จ กรุณาลองใหม่';return}

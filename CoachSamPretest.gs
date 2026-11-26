@@ -210,8 +210,8 @@ function normalizeSubmission_(payload, course) {
   const phone = cleanText_(payload.phone, 32);
   const province = cleanText_(payload.province, 80);
 
-  if (fullName.length < 2 || !/[\u0E00-\u0E7F]/.test(fullName)) {
-    throw new Error('กรุณาระบุชื่อ-นามสกุลภาษาไทยให้ถูกต้อง');
+  if (fullName.length < 2) {
+    throw new Error('กรุณาระบุชื่อ-นามสกุลให้ถูกต้อง (อย่างน้อย 2 ตัวอักษร)');
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('รูปแบบอีเมลไม่ถูกต้อง');
   if (!lineId || !phone || !province) throw new Error('กรุณากรอกข้อมูลติดต่อให้ครบถ้วน');
@@ -337,9 +337,8 @@ function sheetSafeText_(value) {
 
 function postMessageResponse_(message) {
   const messageJson = JSON.stringify(message).replace(/</g, '\\u003c');
-  const originJson = JSON.stringify(PRETEST_CONFIG.parentOrigin);
   const html = '<!doctype html><html><head><meta charset="utf-8"></head><body>' +
-    '<script>window.top.postMessage(' + messageJson + ',' + originJson + ');</script>' +
+    '<script>window.top.postMessage(' + messageJson + ', "*");</script>' +
     '</body></html>';
   return HtmlService.createHtmlOutput(html)
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
