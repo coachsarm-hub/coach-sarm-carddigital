@@ -274,6 +274,10 @@
 .course-search:focus{outline:3px solid #ead9a9;border-color:var(--gold)}
 .course-search-icon{position:absolute;left:.75rem;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;font-size:.88rem}
 .course-empty{padding:2rem 1rem;text-align:center;color:var(--muted);background:#fafbfc;border-bottom:1px solid var(--line);font-size:.95rem;margin:0}
+.course-summary-desc{color:var(--ink);font-size:.9rem;margin:.25rem 0 .45rem;line-height:1.6}
+.course-summary-list{margin:.2rem 0 .75rem;padding-left:1.2rem;color:var(--muted);font-size:.84rem}
+.course-summary-list li{padding:.1rem 0}
+.course-details .course-details-link{margin-top:0}
 @media(max-width:600px){.course{grid-template-columns:34px minmax(0,1fr);gap:.7rem;padding:1.15rem .45rem}.course-title-row{align-items:flex-start;gap:.55rem}.course-card-title{font-size:1rem!important}.course-details-link{min-height:32px;padding:.28rem .5rem;font-size:.72rem}.course-detail-heading-row{display:block}.course-share-button{margin:.2rem 0 .5rem}.calendar-panel-head{align-items:flex-start}.calendar-frame-wrap{height:420px}}
 
 </style>
@@ -659,14 +663,16 @@ function courseCardData(card){
  return {card,title,code,level,docs,inquiry,profile};
 }
 const COURSE_CATALOG=new Map(courseCards().map(card=>{const data=courseCardData(card);return[data.code,data]}));
-courseCards().forEach(card=>{
- const data=courseCardData(card),details=card.querySelector('details');
- if(!details)return;
- const title=document.createElement('h3');title.className='course-card-title';title.textContent=data.title;
- const titleRow=document.createElement('div');titleRow.className='course-title-row';titleRow.appendChild(title);
- const link=document.createElement('a');link.className='course-details-link';link.href='courses/'+encodeURIComponent(data.code)+'.html';link.setAttribute('aria-label','ดูรายละเอียดหลักสูตร '+data.title);link.innerHTML='<span>ดูรายละเอียด</span><span aria-hidden="true">→</span>';titleRow.appendChild(link);details.replaceWith(titleRow);
-});
 function htmlSafe(value){return String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]))}
+courseCards().forEach(card=>{
+ const data=courseCardData(card),box=card.querySelector('.course-details');
+ if(!box)return;
+ const summary=data.profile.objective||'หลักสูตรพัฒนาทักษะเฉพาะทางด้านเทคโนโลยีดิจิทัล';
+ const benefits=(data.profile.benefits||[]).slice(0,3);
+ const benefitsHtml=benefits.length?'<ul class="course-summary-list">'+benefits.map(b=>'<li>'+htmlSafe(b)+'</li>').join('')+'</ul>':'';
+ const docsHtml=data.docs.map(d=>'<a class="course-link" target="_blank" rel="noopener" href="'+htmlSafe(d.href)+'">'+htmlSafe(d.label)+' ↗</a>').join('');
+ box.innerHTML='<p class="course-summary-desc"><strong>หลักสูตรนี้คืออะไร:</strong> '+htmlSafe(summary)+'</p>'+benefitsHtml+'<div class="course-actions"><a class="course-details-link" href="courses/'+encodeURIComponent(data.code)+'.html" target="_blank" rel="noopener" aria-label="ดูรายละเอียดทั้งหมดหลักสูตร '+htmlSafe(data.title)+' ในหน้าใหม่"><span>ดูรายละเอียดทั้งหมด</span><span aria-hidden="true">↗</span></a>'+docsHtml+'</div>';
+});
 function renderCourseDetail(){
  const code=new URLSearchParams(location.search).get('course');if(!code)return;
  const data=COURSE_CATALOG.get(code),root=document.getElementById('courseDetailRoot'),main=document.getElementById('main');root.hidden=false;main.hidden=true;
