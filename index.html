@@ -263,6 +263,30 @@
 .contact .qr-line-btn{display:inline-flex;align-items:center;justify-content:center;margin-top:.65rem;padding:.42rem .85rem;border-radius:999px;background:#06c755;color:#fff;font-size:.78rem;font-weight:700;text-decoration:none}
 .contact .qr-line-btn:hover{filter:brightness(.95)}
 @media(max-width:760px){.contact .contact-grid{grid-template-columns:1fr}.contact .contact-list{grid-template-columns:1fr}}
+.cs-chat-fab{position:fixed;right:20px;bottom:20px;z-index:85;display:inline-flex;align-items:center;gap:.5rem;padding:.72rem 1.08rem;border:0;border-radius:999px;background:var(--navy);color:#fff;font:700 .88rem system-ui;box-shadow:0 12px 28px rgba(12,28,53,.28);cursor:pointer;border:1px solid rgba(199,165,91,.55)}
+.cs-chat-fab:hover{background:#142b4c;transform:translateY(-1px)}
+.cs-chat-panel[hidden]{display:none!important}
+.cs-chat-panel{position:fixed;right:20px;bottom:76px;z-index:86;width:min(360px,calc(100vw - 24px));max-height:min(520px,calc(100vh - 110px));display:flex;flex-direction:column;background:#fff;border:1px solid #d7e0ea;border-radius:14px;box-shadow:0 22px 54px rgba(12,28,53,.25);overflow:hidden}
+.cs-chat-head{background:linear-gradient(135deg,#0c1c35 0%,#142b4c 100%);color:#fff;padding:.85rem 1rem;display:flex;justify-content:space-between;align-items:center;gap:.6rem}
+.cs-chat-head strong{display:block;font-size:.94rem}
+.cs-chat-head small{display:block;font-size:.73rem;color:#ead9a9}
+.cs-chat-close{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;font-size:1.1rem;cursor:pointer;line-height:1}
+.cs-chat-body{flex:1;overflow-y:auto;padding:.85rem;display:flex;flex-direction:column;gap:.65rem;background:#f7f9fc}
+.cs-msg{max-width:88%;padding:.6rem .8rem;border-radius:11px;font-size:.83rem;line-height:1.52;white-space:pre-line;word-break:break-word}
+.cs-msg.bot{align-self:flex-start;background:#fff;border:1px solid #e4e8ee;color:var(--ink);border-bottom-left-radius:3px}
+.cs-msg.user{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:3px}
+.cs-msg-links{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem}
+.cs-msg-link{display:inline-flex;align-items:center;gap:.2rem;padding:.24rem .55rem;border-radius:6px;background:#faf7ee;border:1px solid #e3d7b8;color:#725922;font-size:.74rem;font-weight:700;text-decoration:none}
+.cs-msg-link:hover{background:#f3ebd3}
+.cs-chat-chips{display:flex;flex-wrap:wrap;gap:.35rem;padding:.55rem .8rem;background:#fff;border-top:1px solid #edf1f6}
+.cs-chip{border:1px solid #d5dde7;background:#f9fbfd;color:var(--navy);border-radius:999px;padding:.24rem .62rem;font-size:.73rem;font-weight:600;cursor:pointer}
+.cs-chip:hover{border-color:var(--gold);background:#faf7ee}
+.cs-chat-form{display:flex;gap:.45rem;padding:.65rem .75rem;background:#fff;border-top:1px solid #e4e8ee}
+.cs-chat-input{flex:1;min-width:0;padding:.5rem .7rem;border:1px solid #cbd3de;border-radius:8px;font:inherit;font-size:.84rem}
+.cs-chat-input:focus{outline:2px solid #ead9a9;border-color:var(--gold)}
+.cs-chat-send{padding:.5rem .85rem;border:0;border-radius:8px;background:var(--gold);color:var(--navy);font-weight:750;font-size:.82rem;cursor:pointer}
+.cs-chat-send:disabled{opacity:.6;cursor:wait}
+@media(max-width:760px){.cs-chat-fab{right:14px;bottom:68px;padding:.62rem .92rem;font-size:.82rem}.cs-chat-panel{right:12px;bottom:118px;max-height:min(440px,calc(100vh - 140px))}}
 </style>
 </head><body>
 <a class="skip" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
@@ -297,6 +321,25 @@
 <form id="pretestPostForm" method="post" target="pretestResponseFrame" action="https://script.google.com/macros/s/AKfycbzV5lEFhy3lEqAFzCf3ZvUzPBOZjQe48HLGeNXYro1q0Yi1GeP4DSbe7y6kHS8zjWAcaQ/exec" hidden><input id="pretestPayload" name="payload"></form>
 
 <footer class="footer"><div class="wrap"><span>© <span id="year">2026</span> Coach Sam · Digital &amp; AI Academy</span><a class="to-top" href="#home">กลับขึ้นด้านบน ↑</a></div></footer><div class="mobile-contact" aria-label="ทางลัดติดต่อ"><a href="tel:0991866887">โทรหา</a><a href="https://line.me/ti/p/mhdreWudvj" target="_blank" rel="noopener">LINE</a></div>
+<button type="button" class="cs-chat-fab" id="csChatFab" aria-expanded="false" aria-controls="csChatPanel">💬 แชท Coach Sarm</button>
+<section class="cs-chat-panel" id="csChatPanel" aria-label="แชท Coach Sarm" hidden>
+  <header class="cs-chat-head">
+    <div><strong>แชท Coach Sarm</strong><small>ค้นหาหลักสูตร รอบอบรม &amp; ข้อมูลติดต่อ</small></div>
+    <button type="button" class="cs-chat-close" id="csChatClose" aria-label="ปิดหน้าต่างแชท">×</button>
+  </header>
+  <div class="cs-chat-body" id="csChatBody" aria-live="polite">
+    <div class="cs-msg bot">สวัสดีครับ! ผมคือผู้ช่วยแชท Coach Sarm สอบถามเรื่องหลักสูตรทั้ง 21 วิชา รอบที่เปิดอบรม หรือติดต่ออบรมองค์กรได้เลยครับ</div>
+  </div>
+  <div class="cs-chat-chips" id="csChatChips">
+    <button type="button" class="cs-chip" data-q="แนะนำหลักสูตร AI">แนะนำหลักสูตร AI</button>
+    <button type="button" class="cs-chip" data-q="มีรอบไหนเปิดอบรมบ้าง">มีรอบไหนเปิดบ้าง</button>
+    <button type="button" class="cs-chip" data-q="ติดต่ออบรมองค์กร In-house">ติดต่ออบรม In-house</button>
+  </div>
+  <form class="cs-chat-form" id="csChatForm">
+    <input type="text" class="cs-chat-input" id="csChatInput" placeholder="พิมพ์คำถาม เช่น Power BI, AI..." maxlength="300" autocomplete="off" required>
+    <button type="submit" class="cs-chat-send" id="csChatSend">ส่ง</button>
+  </form>
+</section>
 <script>
 const menu=document.getElementById('menu'),links=document.getElementById('links');const vcard='BEGIN:VCARD\r\nVERSION:3.0\r\nN:ศรีแสนยงค์;สุทธิพจน์;;;\r\nFN:นายสุทธิพจน์ ศรีแสนยงค์ (Coach Sam)\r\nTITLE:วิทยากรและที่ปรึกษาด้านเทคโนโลยีดิจิทัล\r\nORG:COACH SAM - DIGITAL & AI ACADEMY\r\nTEL;TYPE=CELL:0991866887\r\nEMAIL:coach.sarm@gmail.com\r\nURL:https://line.me/ti/p/mhdreWudvj\r\nNOTE:LINE ID samchaieasy\r\nEND:VCARD';const vlink=document.getElementById('vcard-download');vlink.href='data:text/vcard;charset=utf-8,'+encodeURIComponent(vcard);vlink.download='Coach-Sam.vcf';menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'ปิดเมนู':'เปิดเมนู');menu.textContent=open?'×':'☰'});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','เปิดเมนู');menu.textContent='☰'}));const tabs=[...document.querySelectorAll('.filter')],status=document.getElementById('course-status'),courseSearch=document.getElementById('courseSearch'),courseEmpty=document.getElementById('courseEmpty');let activeTab=tabs[0];function filterCourses(){const q=(courseSearch?.value||'').trim().toLowerCase();let n=0;document.querySelectorAll('.course').forEach(card=>{const matchCat=card.dataset.cat===activeTab.dataset.filter;const text=(card.textContent||'').toLowerCase();const show=q?text.includes(q):matchCat;card.hidden=!show;if(show)n++});if(courseEmpty)courseEmpty.hidden=n>0;status.textContent=q?`พบ ${n} หลักสูตรจากคำค้น "${courseSearch.value.trim()}"`:`แสดง ${n} หลักสูตร: ${activeTab.textContent.trim()}`}function selectTab(btn){activeTab=btn;if(courseSearch&&courseSearch.value)courseSearch.value='';tabs.forEach(t=>{const active=t===btn;t.setAttribute('aria-selected',String(active));t.tabIndex=active?0:-1});filterCourses()}if(courseSearch)courseSearch.addEventListener('input',filterCourses);tabs.forEach((btn,i)=>{btn.addEventListener('click',()=>selectTab(btn));btn.addEventListener('keydown',e=>{if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length;tabs[next].focus();selectTab(tabs[next])}})});selectTab(tabs[0]);document.getElementById('year').textContent=new Date().getFullYear();
 (function(){const d=document.getElementById('quickSurveyDate'),b=document.getElementById('openSurveyBtn'),s=document.getElementById('shareSurveyNative'),st=document.getElementById('quickSurveyShareStatus');if(d&&b){d.addEventListener('change',()=>{b.href=d.value?'survey.html?date='+encodeURIComponent(d.value):'survey.html'})}if(s){s.addEventListener('click',async()=>{const u=new URL('survey.html',location.href).href,t='แบบสำรวจหลักสูตรที่สนใจ & นัดหมายวันอบรม Coach Sam';if(navigator.share){try{await navigator.share({title:t,text:t,url:u});st.textContent='เปิดเมนูแชร์แล้ว';return}catch(e){if(e&&e.name==='AbortError')return}}try{await navigator.clipboard.writeText(u);st.textContent='คัดลอกลิงก์แบบสำรวจแล้ว'}catch(e){st.textContent=u}})}})();
@@ -734,6 +777,101 @@ const PRETEST_ENDPOINT='https://script.google.com/macros/s/AKfycbzV5lEFhy3lEqAFz
       root.focus();
     }
     renderCourseDetail();
+
+    (function initCoachSarmChat() {
+      const fab = document.getElementById('csChatFab');
+      const panel = document.getElementById('csChatPanel');
+      const closeBtn = document.getElementById('csChatClose');
+      const body = document.getElementById('csChatBody');
+      const form = document.getElementById('csChatForm');
+      const input = document.getElementById('csChatInput');
+      const sendBtn = document.getElementById('csChatSend');
+      const chips = document.getElementById('csChatChips');
+      if (!fab || !panel || !body || !form || !input) return;
+
+      const escChat = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      function toggleChat(open) {
+        panel.hidden = !open;
+        fab.setAttribute('aria-expanded', String(open));
+        if (open) setTimeout(() => input.focus(), 40);
+      }
+      fab.addEventListener('click', () => toggleChat(panel.hidden));
+      if (closeBtn) closeBtn.addEventListener('click', () => toggleChat(false));
+
+      function appendMsg(role, text, courses) {
+        const div = document.createElement('div');
+        div.className = 'cs-msg ' + role;
+        div.textContent = text;
+        if (Array.isArray(courses) && courses.length) {
+          const links = document.createElement('div');
+          links.className = 'cs-msg-links';
+          links.innerHTML = courses.map(c =>
+            `<a class="cs-msg-link" href="courses/${encodeURIComponent(c.code)}.html" target="_blank" rel="noopener">${escChat(c.title)} ↗</a>`
+          ).join('');
+          div.appendChild(links);
+        }
+        body.appendChild(div);
+        body.scrollTop = body.scrollHeight;
+        return div;
+      }
+
+      function localSiteFallback(q) {
+        const ql = q.toLowerCase();
+        const cards = [...document.querySelectorAll('.course')].map(el => {
+          const title = el.querySelector('h3')?.textContent?.trim() || '';
+          const href = el.querySelector('.course-details-link')?.getAttribute('href') || '';
+          const codeMatch = href.match(/courses\/([^.]+)\.html/);
+          return { code: codeMatch ? codeMatch[1] : '', title };
+        }).filter(c => c.code && c.title);
+        const matched = cards.filter(c => {
+          const t = (c.code + ' ' + c.title).toLowerCase();
+          return q.toLowerCase().split(/\s+/).some(w => w.length >= 2 && t.includes(w));
+        }).slice(0, 4);
+        if (ql.includes('ติดต่อ') || ql.includes('line') || ql.includes('โทร') || ql.includes('in-house')) {
+          return { reply: 'ติดต่อ Coach Sam ได้ที่ โทร 099-186-6887, LINE ID: samchaieasy หรืออีเมล coach.sarm@gmail.com ครับ', courses: matched };
+        }
+        if (matched.length) {
+          return { reply: `พบหลักสูตรที่เกี่ยวข้อง ${matched.length} รายการครับ กดดูรายละเอียดได้เลย:`, courses: matched };
+        }
+        return { reply: 'สามารถเลือกดูหลักสูตรทั้งหมดในหน้าหลัก หรือติดต่อ Coach Sam ทาง LINE: samchaieasy (099-186-6887) ได้เลยครับ', courses: [] };
+      }
+
+      async function askChat(q) {
+        const question = String(q || '').trim();
+        if (!question) return;
+        appendMsg('user', question);
+        input.value = '';
+        sendBtn.disabled = true;
+        const thinking = appendMsg('bot', 'กำลังค้นหาคำตอบ...');
+        try {
+          const res = await fetch(PRETEST_ENDPOINT + '?action=chat&q=' + encodeURIComponent(question));
+          const data = await res.json();
+          thinking.remove();
+          if (data && data.ok && data.reply) {
+            appendMsg('bot', data.reply, data.courses || []);
+          } else {
+            const fb = localSiteFallback(question);
+            appendMsg('bot', fb.reply, fb.courses);
+          }
+        } catch (err) {
+          thinking.remove();
+          const fb = localSiteFallback(question);
+          appendMsg('bot', fb.reply, fb.courses);
+        } finally {
+          sendBtn.disabled = false;
+        }
+      }
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        askChat(input.value);
+      });
+      if (chips) {
+        chips.querySelectorAll('.cs-chip').forEach(btn => {
+          btn.addEventListener('click', () => askChat(btn.dataset.q || btn.textContent));
+        });
+      }
+    })();
 
   </script>
 </body>
