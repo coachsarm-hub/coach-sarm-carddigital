@@ -898,7 +898,9 @@ const PRETEST_ENDPOINT='https://script.google.com/macros/s/AKfycbwbs_SnoCp5QlcTr
         }).filter(c => c.code && c.title);
         const matched = cards.filter(c => {
           const t = (c.code + ' ' + c.title).toLowerCase();
-          return q.toLowerCase().split(/\s+/).some(w => w.length >= 2 && t.includes(w));
+          const hasSyn = (ql.includes('ai') && (t.includes('ai') || t.includes('ปัญญาประดิษฐ์'))) ||
+            ((ql.includes('web') || ql.includes('เว็บ')) && (t.includes('web') || t.includes('เว็ป') || t.includes('react') || t.includes('javascript')));
+          return hasSyn || ql.split(/\s+/).some(w => w.length >= 2 && t.includes(w));
         }).slice(0, 4);
         if (ql.includes('ติดต่อ') || ql.includes('line') || ql.includes('โทร') || ql.includes('in-house')) {
           return { reply: 'ติดต่อ Coach Sam ได้ที่ โทร 099-186-6887, LINE ID: samchaieasy หรืออีเมล coach.sarm@gmail.com ครับ', courses: matched };
