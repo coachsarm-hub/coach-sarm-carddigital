@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<link rel="preload" as="image" href="images/coach-sam-portrait.webp" type="image/webp">
+  <link rel="preload" as="image" href="images/coach-sam-portrait.webp" type="image/webp">
 
 <!-- Open Graph / Facebook / LINE -->
 <meta property="og:type" content="profile">
@@ -242,32 +242,11 @@
 .course-detail-missing{padding:1rem;background:#f5f6f8;border-radius:6px;color:#687489}
 @media(max-width:600px){.course-detail-page{padding:1.2rem 0 4.2rem}.course-detail-wrap{width:min(100% - 28px,560px)}.course-detail-actions{display:grid}.course-detail-actions .btn{width:100%}.course-details-link{max-width:100%}}
 
-/* Course catalogue: title first, then clear actions */
-.course-grid{display:block;border-top:1px solid var(--line)}
-.course{display:grid;grid-template-columns:48px minmax(0,1fr);gap:1rem;padding:1.35rem 1rem;border:0;border-bottom:1px solid var(--line);background:transparent;box-shadow:none}
-.course:hover{background:#fbfcfd;box-shadow:none}
-.course-main{min-width:0}
-.course-title-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.course-card-title{font-size:clamp(1.05rem,2.4vw,1.28rem)!important;font-weight:750;line-height:1.5!important;margin:0;color:var(--navy);min-width:0}
-.course-meta{margin-top:.42rem}
-.course-details-link{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;flex:none;width:auto;max-width:180px;min-height:34px;margin:0;padding:.32rem .62rem;border:1px solid #d9c48f;border-radius:999px;background:transparent;color:#725922;font-size:.76rem;line-height:1.25;font-weight:650}
-.course-details-link span:last-child{color:#a98232;font-size:.9rem}
-.course-details-link:hover,.course-details-link:focus-visible{background:#faf6ea;color:var(--navy);border-color:#b89445;outline:2px solid #ead9a9;outline-offset:2px}
-.course-actions{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;margin-top:.72rem}
-.course-actions .pretest-launch{min-height:42px;padding:.48rem .78rem;font-size:.88rem}
-.course-detail-heading-row{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
-.course-share-button{flex:none;display:inline-flex;align-items:center;justify-content:center;gap:.45rem;min-height:42px;padding:.55rem .85rem;border:1px solid #cbd3de;border-radius:5px;background:#fff;color:var(--navy);font:650 .88rem system-ui;cursor:pointer}
-.course-share-button:hover,.course-share-button:focus-visible{border-color:var(--gold);outline:3px solid #ead9a9;outline-offset:2px}
-.course-share-status{min-height:1.4em;color:var(--muted);font-size:.82rem;margin:.35rem 0 .7rem}
-.calendar-panel{min-width:0;background:#fff;border:1px solid var(--line);padding:clamp(1rem,2.8vw,1.5rem);box-shadow:0 14px 38px #0c1c3508}
-.calendar-panel-head{display:flex;justify-content:space-between;align-items:center;gap:1rem}.calendar-panel-head h3{margin:.2rem 0;color:var(--navy);font-size:1.3rem}.calendar-panel-head a{color:#80601f;font-size:.82rem;font-weight:700;text-decoration:none;white-space:nowrap}.calendar-panel-head a:hover{text-decoration:underline}.calendar-caption,.calendar-note{color:var(--muted);font-size:.82rem}.calendar-frame-wrap{height:460px;overflow:hidden;border:1px solid var(--line);border-radius:5px}.calendar-frame-wrap iframe{display:block;width:100%;height:100%;border:0}.calendar-note{margin:.65rem 0 0}
-.contact-item.facebook .contact-icon{font-weight:800;font-family:Arial,sans-serif}
-.pretest-progress{position:sticky;top:0;z-index:2;background:#fff;padding:.45rem 0 .65rem;border-bottom:1px solid var(--line);margin-bottom:.75rem;display:flex;flex-direction:column;gap:.35rem;font-size:.82rem;color:var(--navy);font-weight:600}
-.pretest-progress-track{height:6px;background:#e8edf3;border-radius:999px;overflow:hidden}
-.pretest-progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--navy),var(--gold));border-radius:999px;transition:width .25s ease}
-.pretest-spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(138,76,0,.25);border-top-color:#8a4c00;border-radius:50%;animation:pretestSpin .7s linear infinite;vertical-align:-2px;margin-right:.4rem}
-@keyframes pretestSpin{to{transform:rotate(360deg)}}
-@media(max-width:600px){.course{grid-template-columns:34px minmax(0,1fr);gap:.7rem;padding:1.15rem .45rem}.course-title-row{align-items:flex-start;gap:.55rem}.course-card-title{font-size:1rem!important}.course-details-link{min-height:32px;padding:.28rem .5rem;font-size:.72rem}.course-detail-heading-row{display:block}.course-share-button{margin:.2rem 0 .5rem}.calendar-panel-head{align-items:flex-start}.calendar-frame-wrap{height:420px}}
+    /* Course catalogue: title first, then clear actions */
+    .course-grid {
+      display: block;
+      border-top: 1px solid var(--line)
+    }
 
 </style>
 </head><body>
@@ -512,16 +491,1030 @@ const COURSE_PRETEST_GROUP={
 '0920014220406':'microsoftAI','10120014220801':'genAI','10120014220504':'law'
 };
 
-const pretestModal=document.getElementById('pretestModal');
-const pretestFrame=document.getElementById('pretestResponseFrame');
-const pretestPostForm=document.getElementById('pretestPostForm');
-const pretestPayloadField=document.getElementById('pretestPayload');
-const pretestStatus=document.getElementById('pretestStatus');
-let activePretest=null;
-let currentRequestId=null;
-let submitTimeout=null;
-function createSubmissionId(){return crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
-function openPretest(card){
+    .course-main {
+      min-width: 0
+    }
+
+    .course-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem
+    }
+
+    .course-card-title {
+      font-size: clamp(1.05rem, 2.4vw, 1.28rem) !important;
+      font-weight: 750;
+      line-height: 1.5 !important;
+      margin: 0;
+      color: var(--navy);
+      min-width: 0
+    }
+
+    .course-meta {
+      margin-top: .42rem
+    }
+
+    .course-details-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      flex: none;
+      width: auto;
+      max-width: 180px;
+      min-height: 34px;
+      margin: 0;
+      padding: .32rem .62rem;
+      border: 1px solid #d9c48f;
+      border-radius: 999px;
+      background: transparent;
+      color: #725922;
+      font-size: .76rem;
+      line-height: 1.25;
+      font-weight: 650
+    }
+
+    .course-details-link span:last-child {
+      color: #a98232;
+      font-size: .9rem
+    }
+
+    .course-details-link:hover,
+    .course-details-link:focus-visible {
+      background: #faf6ea;
+      color: var(--navy);
+      border-color: #b89445;
+      outline: 2px solid #ead9a9;
+      outline-offset: 2px
+    }
+
+    .course-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: .6rem;
+      margin-top: .72rem
+    }
+
+    .course-actions .pretest-launch {
+      min-height: 42px;
+      padding: .48rem .78rem;
+      font-size: .88rem
+    }
+
+    .course-detail-heading-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem
+    }
+
+    .course-share-button {
+      flex: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      min-height: 42px;
+      padding: .55rem .85rem;
+      border: 1px solid #cbd3de;
+      border-radius: 5px;
+      background: #fff;
+      color: var(--navy);
+      font: 650 .88rem system-ui;
+      cursor: pointer
+    }
+
+    .course-share-button:hover,
+    .course-share-button:focus-visible {
+      border-color: var(--gold);
+      outline: 3px solid #ead9a9;
+      outline-offset: 2px
+    }
+
+    .course-share-status {
+      min-height: 1.4em;
+      color: var(--muted);
+      font-size: .82rem;
+      margin: .35rem 0 .7rem
+    }
+
+    .calendar-panel {
+      min-width: 0;
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: clamp(1rem, 2.8vw, 1.5rem);
+      box-shadow: 0 14px 38px #0c1c3508
+    }
+
+    .calendar-panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem
+    }
+
+    .calendar-panel-head h3 {
+      margin: .2rem 0;
+      color: var(--navy);
+      font-size: 1.3rem
+    }
+
+    .calendar-panel-head a {
+      color: #80601f;
+      font-size: .82rem;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap
+    }
+
+    .calendar-panel-head a:hover {
+      text-decoration: underline
+    }
+
+    .calendar-caption,
+    .calendar-note {
+      color: var(--muted);
+      font-size: .82rem
+    }
+
+    .calendar-frame-wrap {
+      height: 460px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 5px
+    }
+
+    .calendar-frame-wrap iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0
+    }
+
+    .calendar-note {
+      margin: .65rem 0 0
+    }
+
+    .contact-item.facebook .contact-icon {
+      font-weight: 800;
+      font-family: Arial, sans-serif
+    }
+
+    .pretest-progress {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #fff;
+      padding: .45rem 0 .65rem;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: .75rem;
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+      font-size: .82rem;
+      color: var(--navy);
+      font-weight: 600
+    }
+
+    .pretest-progress-track {
+      height: 6px;
+      background: #e8edf3;
+      border-radius: 999px;
+      overflow: hidden
+    }
+
+    .pretest-progress-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--navy), var(--gold));
+      border-radius: 999px;
+      transition: width .25s ease
+    }
+
+    .pretest-spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(138, 76, 0, .25);
+      border-top-color: #8a4c00;
+      border-radius: 50%;
+      animation: pretestSpin .7s linear infinite;
+      vertical-align: -2px;
+      margin-right: .4rem
+    }
+
+    @keyframes pretestSpin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    @media(max-width:600px) {
+      .course {
+        grid-template-columns: 34px minmax(0, 1fr);
+        gap: .7rem;
+        padding: 1.15rem .45rem
+      }
+
+      .course-title-row {
+        align-items: flex-start;
+        gap: .55rem
+      }
+
+      .course-card-title {
+        font-size: 1rem !important
+      }
+
+      .course-details-link {
+        min-height: 32px;
+        padding: .28rem .5rem;
+        font-size: .72rem
+      }
+
+      .course-detail-heading-row {
+        display: block
+      }
+
+      .course-share-button {
+        margin: .2rem 0 .5rem
+      }
+
+      .calendar-panel-head {
+        align-items: flex-start
+      }
+
+      .calendar-frame-wrap {
+        height: 420px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
+  <div class="topbar">
+    <div class="wrap"><span>COACH SAM · DIGITAL &amp; AI
+        ACADEMY</span><span>วิทยากรและที่ปรึกษาด้านเทคโนโลยีดิจิทัล</span></div>
+  </div>
+  <header class="nav">
+    <nav class="wrap navin" aria-label="เมนูหลัก"><a class="brand" href="#home">COACH SAM<small>DIGITAL &amp; AI
+          ACADEMY</small></a><button class="menu" id="menu" aria-label="เปิดเมนู" aria-expanded="false"
+        aria-controls="links">☰</button>
+      <div class="links" id="links"><a href="#about">ประวัติ</a><a href="#courses">หลักสูตร</a><a
+          href="#experience">ประสบการณ์</a><a href="#certificates">ใบรับรอง</a><a href="#contact">ติดต่อ</a></div><a
+        class="nav-cta" href="#contact">เชิญเป็นวิทยากร <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero" id="home">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Professional Speaker &amp; Consultant</div>
+          <h1>COACH SAM<span>นายสุทธิพจน์ ศรีแสนยงค์</span></h1>
+          <div class="hero-lead">วิทยากรและที่ปรึกษาด้านเทคโนโลยีดิจิทัล</div>
+          <p class="hero-copy">ผู้เชี่ยวชาญด้าน IT และ Project Manager ถ่ายทอดความรู้ด้าน AI, การวิเคราะห์ข้อมูล
+            และเทคโนโลยีดิจิทัล ด้วยประสบการณ์การอบรมทั้งภาครัฐและภาคธุรกิจ</p>
+          <div class="actions card-actions"><a class="btn gold" href="tel:0991866887">☎ โทร 099-186-6887</a><a
+              class="btn linebtn" href="https://line.me/ti/p/mhdreWudvj" target="_blank" rel="noopener">LINE ·
+              samchaieasy ↗</a><a class="btn linebtn" href="mailto:coach.sarm@gmail.com">✉ ส่งอีเมล</a><a
+              class="btn linebtn vcard" id="vcard-download" href="#">＋ บันทึกผู้ติดต่อ</a></div>
+          <div class="card-extra"><a href="#courses">ดูหลักสูตรฝึกอบรม ↓</a><span>แตะเพื่อโทร · แชต · ส่งอีเมล</span>
+          </div>
+          <div class="hero-meta"><span><b>IT</b> · Project Management</span><span><b>AI</b> · Data
+              Analytics</span><span><b>Digital</b> · Online Business</span></div>
+        </div>
+        <div class="portrait-wrap">
+          <picture>
+            <source srcset="images/coach-sam-portrait.webp" type="image/webp"><img class="portrait"
+              src="images/coach-sam-portrait.png" alt="ภาพถ่ายนายสุทธิพจน์ ศรีแสนยงค์ หรือ Coach Sam" width="1122"
+              height="1402" fetchpriority="high" decoding="async">
+          </picture>
+          <div class="portrait-note">Practical learning · Digital skills</div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="about">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">About Coach Sam</div>
+          <h2>ประสบการณ์และแนวทางการถ่ายทอด</h2>
+          <p class="sub">ผสานความรู้ด้านเทคโนโลยี การบริหารโครงการ และการให้คำปรึกษา
+            เพื่อช่วยให้ผู้เรียนเข้าใจและนำไปประยุกต์ใช้กับงานจริง</p>
+        </div>
+        <div class="about-grid">
+          <div>
+            <p>นายสุทธิพจน์ ศรีแสนยงค์ เป็นผู้เชี่ยวชาญด้าน IT และ Project Manager
+              พร้อมประสบการณ์ให้คำปรึกษาด้านซอฟต์แวร์ การตลาดออนไลน์ และตลาดออนไลน์พัฒนาชุมชนจังหวัดกาฬสินธุ์
+              มุ่งเน้นการเรียนรู้ที่เข้าใจง่ายและนำไปใช้ได้จริง</p>
+            <details class="about-more">
+              <summary>อ่านเพิ่มเกี่ยวกับประสบการณ์</summary>
+              <p>ประสบการณ์ในประวัติวิทยากรครอบคลุมการวิเคราะห์ข้อมูลด้วย Power BI การประยุกต์ใช้ AI ในงานกราฟิก
+                โลจิสติกส์ ธุรกิจท่องเที่ยว และงานเอกสาร โดยมีทั้งบทบาทวิทยากรและผู้ช่วยวิทยากรตามแต่ละหลักสูตร</p>
+            </details>
+            <div class="pill-row"><span class="pill">Artificial Intelligence</span><span class="pill">Power
+                BI</span><span class="pill">Software &amp; IT</span><span class="pill">Digital Business</span></div>
+          </div>
+          <aside class="calendar-panel" aria-labelledby="courseCalendarTitle">
+            <div class="calendar-panel-head">
+              <div><span class="kicker">Training Schedule</span>
+                <h3 id="courseCalendarTitle">ปฏิทินหลักสูตร</h3>
+              </div><a
+                href="https://calendar.google.com/calendar/embed?src=ec0c2500611a69fcfc2f9aeb35a7fd99afc37814a74d8ca8cc568db2365141b4%40group.calendar.google.com&amp;ctz=Asia%2FBangkok"
+                target="_blank" rel="noopener noreferrer">เปิดปฏิทิน ↗</a>
+            </div>
+            <p class="calendar-caption">กำหนดการหลักสูตรจากปฏิทินอบรม Coach Sam ซึ่งอัปเดตแบบเรียลไทม์</p>
+            <div class="calendar-frame-wrap"><iframe
+                src="https://calendar.google.com/calendar/embed?src=ec0c2500611a69fcfc2f9aeb35a7fd99afc37814a74d8ca8cc568db2365141b4%40group.calendar.google.com&amp;ctz=Asia%2FBangkok&amp;mode=MONTH&amp;showTitle=0&amp;showPrint=0"
+                title="ปฏิทินหลักสูตร Coach Sam" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <p class="calendar-note">หากปฏิทินไม่แสดงรายการ ให้ตรวจสิทธิ์การเข้าถึงหรือเปิดดูใน Google Calendar</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+    <section class="section alt">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Areas of Expertise</div>
+          <h2>หัวข้อที่พร้อมถ่ายทอด</h2>
+          <p class="sub">จัดเนื้อหาให้เหมาะกับพื้นฐานผู้เรียนและโจทย์ขององค์กร</p>
+        </div>
+        <div class="expertise">
+          <article class="expert-card">
+            <div class="n">01</div>
+            <h3>AI &amp; Generative AI</h3>
+            <p>พื้นฐานและการประยุกต์ใช้ AI ในงานและธุรกิจ</p>
+          </article>
+          <article class="expert-card">
+            <div class="n">02</div>
+            <h3>Data Analytics</h3>
+            <p>Power BI, Dashboard และการสื่อสารข้อมูล</p>
+          </article>
+          <article class="expert-card">
+            <div class="n">03</div>
+            <h3>Digital Technology</h3>
+            <p>ซอฟต์แวร์ การพัฒนาเว็บ และการบริหารโครงการ</p>
+          </article>
+          <article class="expert-card">
+            <div class="n">04</div>
+            <h3>Digital Business</h3>
+            <p>การตลาดออนไลน์ เครื่องมือดิจิทัล และธุรกิจชุมชน</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="courses">
+      <div class="wrap">
+        <div class="courses-head">
+          <div class="section-head">
+            <div class="kicker">Training Catalogue</div>
+            <h2>หลักสูตรฝึกอบรม</h2>
+            <p class="sub">รวมหลักสูตรที่ระบุในรายการ แบ่งตามระดับและกลุ่มเนื้อหา เอกสารประกอบเชื่อมเฉพาะรายการที่มี URL
+              ให้ไว้</p>
+          </div>
+        </div>
+        <div class="filters" role="tablist" aria-label="หมวดหลักสูตร"><button class="filter" role="tab"
+            id="tab-advanced" aria-controls="courseGrid" aria-selected="true" tabindex="0"
+            data-filter="advanced">ระดับสูง<span class="count">11</span></button><button class="filter" role="tab"
+            id="tab-intermediate" aria-controls="courseGrid" aria-selected="false" tabindex="-1"
+            data-filter="intermediate">ระดับกลาง<span class="count">7</span></button><button class="filter" role="tab"
+            id="tab-workplace" aria-controls="courseGrid" aria-selected="false" tabindex="-1"
+            data-filter="workplace">สำหรับสถานประกอบกิจการ<span class="count">3</span></button><span class="sr-only"
+            id="course-status" aria-live="polite"></span></div>
+        <div class="course-grid" id="courseGrid" role="tabpanel" tabindex="0">
+          <article class="course" data-cat="advanced">
+            <div class="course-num">01</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การบริหารโครงการพัฒนาซอฟต์แวร์</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920014220601 · ระดับสูง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://gcloud.dsd.go.th/~dgt/course01/16.pdf">เอกสารหลักสูตร ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920014220601</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="advanced">
+            <div class="course-num">02</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>AI Assisted Coding Fundamentals พัฒนานวัตกรรมดิจิทัล</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 10120014220115 · ระดับสูง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/132%20%C2%A1%C3%D0%B4%D1%BA%20AI%20Assisted%20Coding%20Fundamentals%20%BE%D1%B2%B9%D2%B9%C7%D1%B5%A1%C3%C3%C1%B4%D4%A8%D4%B7%D1%C5%2030%20%AA%C1.%2010120014220115.pdf">เอกสารหลักสูตร
+                      ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 10120014220115</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="advanced">
+            <div class="course-num">03</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การเขียนโปรแกรมประมวลผลภาพและเทคโนโลยีปัญญาประดิษฐ์</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920224190208 · ระดับสูง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://gcloud.dsd.go.th/~dgt/course01/12.pdf">เอกสารหลักสูตร ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920224190208</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="advanced">
+            <div class="course-num">04</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การพัฒนาเว็ปแอปพลิเคชัน ระดับ 1</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920084220103 · ระดับสูง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://gcloud.dsd.go.th/~dgt/course01/13.pdf">เอกสารหลักสูตร ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920084220103</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="advanced">
+            <div class="course-num">05</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การพัฒนาเว็ปแอปพลิเคชัน ระดับ 2</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920084220104 · ระดับสูง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://gcloud.dsd.go.th/~dgt/course01/14.pdf">เอกสารหลักสูตร ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920084220104</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="advanced">
+            <div class="course-num">06</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การพัฒนาเว็ปแอปพลิเคชัน ระดับ 3</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920084220105 · ระดับสูง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://gcloud.dsd.go.th/~dgt/course01/15.pdf">เอกสารหลักสูตร ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920084220105</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="advanced">
+            <div class="course-num">07</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การพัฒนา Web E-Comerce ร้านค้าออนไลน์</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920224220118 · ระดับสูง</p>
+                  <div class="course-actions"><span class="inquiry">เอกสารหลักสูตร: สอบถามเพิ่มเติม</span></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920224220118</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="advanced">
+            <div class="course-num">08</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การสร้างแอพพลิเคชั่นเพื่อการท่องเที่ยว</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920224220110 · ระดับสูง</p>
+                  <div class="course-actions"><span class="inquiry">เอกสารหลักสูตร: สอบถามเพิ่มเติม</span></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920224220110</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="advanced">
+            <div class="course-num">09</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การออกแบบประสบการณ์ผู้ใช้และส่วนติดต่อผู้ใช้ (UX-UI)</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920014220305 · ระดับสูง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://gcloud.dsd.go.th/~dgt/course01/11.pdf">เอกสารหลักสูตร ↗</a><a class="course-link"
+                      target="_blank" rel="noopener" href="https://gcloud.dsd.go.th/~dgt/toolkit01/11.pdf">คู่มือ ↗</a>
+                  </div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920014220305</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="advanced">
+            <div class="course-num">10</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การพัฒนาโปรแกรม Web Application ด้วย React</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 10120014220103 · ระดับสูง</p>
+                  <div class="course-actions"><span class="inquiry">เอกสารหลักสูตร: สอบถามเพิ่มเติม</span></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 10120014220103</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="advanced">
+            <div class="course-num">11</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>โปรแกรมภาษา JavaScript สำหรับการพัฒนาเว็บไซต์</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 10020084220605 · ระดับสูง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/131%20%C2%A1%C3%D0%B4%D1%BA%20%E2%BB%C3%E1%A1%C3%C1%C0%D2%C9%D2%20JavaScript%20%CA%D3%CB%C3%D1%BA%A1%D2%C3%BE%D1%B2%B9%D2%E0%C7%E7%BA%E4%AB%B5%EC%2030%20%AA%C1.%2010020084220605.pdf">เอกสารหลักสูตร
+                      ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 10020084220605</span><span class="level">ระดับสูง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="intermediate">
+            <div class="course-num">11</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การประยุกต์ใช้ AI เพื่อเพิ่มประสิทธิภาพงานเอกสารและการสื่อสาร</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 10120014220610 · ระดับกลาง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/120%20%C2%A1%C3%D0%B4%D1%BA%20%CB%C5%D1%A1%CA%D9%B5%C3%20%A1%D2%C3%BB%C3%D0%C2%D8%A1%B5%EC%E3%AA%E9%20AI%20%E0%BE%D7%E8%CD%E0%BE%D4%E8%C1%BB%C3%D0%CA%D4%B7%B8%D4%C0%D2%BE%A7%D2%B9%2030%20%AA%C1.%2010120014220610.pdf">เอกสารหลักสูตร
+                      ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 10120014220610</span><span class="level">ระดับกลาง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="intermediate">
+            <div class="course-num">12</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>Content Marketing และ การขายออนไลน์ด้วยเทคโนโลยีปัญญาประดิษฐ์ (AI)</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 2220017230213 · ระดับกลาง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/75%20%C2%A1%C3%D0%B4%D1%BA%20content%20marketing%20%E1%C5%D0%A1%D2%C3%E2%D2%C2%CD%CD%B9%E4%C5%B9%EC%B4%E9%C7%C2%E0%B7%A4%E2%B9%E2%C5%C2%D5%BB%D1%AD%AD%D2%BB%C3%D0%B4%D4%C9%B0%EC%20%28AI%29%2030%20%AA%C1.%202220017230213.pdf">เอกสารหลักสูตร
+                      ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 2220017230213</span><span class="level">ระดับกลาง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="intermediate">
+            <div class="course-num">13</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การทำธุรกิจผ่านเครือข่ายออนไลน์</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 50200172304104 · ระดับกลาง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/44%20%C2%A1%C3%D0%B4%D1%BA%20%A1%D2%C3%B7%D3%B8%D8%C3%A1%D4%A8%BC%E8%D2%B9%E0%A4%C3%D7%CD%A2%E8%D2%C2%CD%CD%B9%E4%C5%B9%EC%2030%20%AA%C1.50200172304104.pdf">เอกสารหลักสูตร
+                      ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 50200172304104</span><span class="level">ระดับกลาง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="intermediate">
+            <div class="course-num">14</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การวิเคราะห์ข้อมูลด้วยโปรแกรม Power BI</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920014220605 · ระดับกลาง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://gcloud.dsd.go.th/~dgt/course02/24.pdf">เอกสารหลักสูตร ↗</a><a class="course-link"
+                      target="_blank" rel="noopener" href="https://gcloud.dsd.go.th/~dgt/toolkit02/24.pdf">คู่มือ ↗</a>
+                  </div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920014220605</span><span class="level">ระดับกลาง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="intermediate">
+            <div class="course-num">15</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การวิเคราะห์ข้อมูลด้วย Excel และ Power BI</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920014220405 · ระดับกลาง</p>
+                  <div class="course-actions"><span class="inquiry">เอกสารหลักสูตร: สอบถามเพิ่มเติม</span></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920014220405</span><span class="level">ระดับกลาง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="intermediate">
+            <div class="course-num">16</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>เทคโนโลยีปัญญาประดิษฐ์สําหรับธุรกิจท่องเที่ยวและบริการ(AI for Hospitality and Tourism)</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 2220017320213 · ระดับกลาง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2011%20%B7%E8%CD%A7%E0%B7%D5%E8%C2%C7%E1%C5%D0%BA%C3%D4%A1%D2%C3%20%28TS%29/170%20%C2%A1%C3%D0%B4%D1%BA%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%BB%D1%AD%AD%D2%BB%C3%D0%B4%D4%C9%B0%EC%CA%D3%CB%C3%D1%BA%B8%D8%C3%A1%D4%A8%B7%E8%CD%A7%E0%B7%D5%E8%C2%C7%E1%C5%D0%BA%C3%D4%A1%D2%C3%2030%20%AA%C1.%202220017320213.pdf">เอกสารหลักสูตร
+                      ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 2220017320213</span><span class="level">ระดับกลาง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="intermediate">
+            <div class="course-num">17</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>ยกระดับ การใช้ Google Application เพื่อธุรกิจ (Using of Google Application for Business)</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920224220116 · ระดับกลาง</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/17%20%C2%A1%C3%D0%B4%D1%BA%20%A1%D2%C3%E3%AA%E9%20Google%20Application%20%E0%BE%D7%E8%CD%B8%D8%C3%A1%D4%A8%20%28%BB%C3%D1%BA%BB%C3%D8%A7%29%2030%20%AA%C1.%200920224220116.pdf">เอกสารหลักสูตร
+                      ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920224220116</span><span class="level">ระดับกลาง</span>
+              </div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="workplace">
+            <div class="course-num">18</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การใช้ Microsoft AI Skills for Everyone (สำหรับองค์กรและภาคธุรกิจ)</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 0920014220406 · สถานประกอบกิจการ</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/104%20%C2%A1%C3%D0%B4%D1%BA%20%A1%D2%C3%E3%AA%E9%20Microsoft%20AI%20Skill%20for%20Everyone%206%20%AA%C1.%20%28%CA%D3%CB%C3%D1%BA%CD%A7%A4%EC%A1%C3%E1%C5%D0%C0%D2%A4%B8%D8%C3%A1%D4%A8%29%200920014220406.pdf">เอกสารหลักสูตร
+                      ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 0920014220406</span><span
+                  class="level">สถานประกอบกิจการ</span></div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="workplace">
+            <div class="course-num">19</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>การใช้งาน Generative AI ในองค์กรและภาคธุรกิจ</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 10120014220801 · สถานประกอบกิจการ</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/89%20%C2%A1%C3%D0%B4%D1%BA%20%A1%D2%C3%E3%AA%E9%A7%D2%B9%20Generative%20AI%20%E3%B9%CD%A7%A4%EC%A1%C3%E1%C5%D0%C0%D2%A4%B8%D8%C3%A1%D4%A8%206%20%AA%C1.%2010120014220801.pdf">เอกสารหลักสูตร
+                      ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 10120014220801</span><span
+                  class="level">สถานประกอบกิจการ</span></div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+          <article class="course" data-cat="workplace">
+            <div class="course-num">20</div>
+            <div class="course-main">
+              <details>
+                <summary class="course-toggle">
+                  <h3>กฎหมายดิจิทัลสำหรับผู้ใช้งานทั่วไป</h3>
+                </summary>
+                <div class="course-details">
+                  <p>รหัส 10120014220504 · สถานประกอบกิจการ</p>
+                  <div class="course-actions"><a class="course-link" target="_blank" rel="noopener"
+                      href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/92%20%C2%A1%C3%D0%B4%D1%BA%20%A1%AE%CB%C1%D2%C2%B4%D4%A8%D4%B7%D1%C5%CA%D3%CB%C3%D1%BA%BC%D9%E9%E3%AA%E9%A7%D2%B9%B7%D1%E8%C7%E4%BB%206%20%AA%C1.%2010120014220504.pdf">เอกสารหลักสูตร
+                      ↗</a></div>
+                </div>
+              </details>
+              <div class="course-meta"><span class="code">รหัส 10120014220504</span><span
+                  class="level">สถานประกอบกิจการ</span></div>
+              <div class="course-actions"><button class="pretest-launch" type="button" data-open-pretest>สำรวจก่อนเรียน
+                  (Pre-Test)</button></div>
+            </div>
+          </article>
+        </div>
+        <p class="footnote">หมายเหตุ: ชื่อหลักสูตรและรหัสหลักสูตรถอดตามรายการที่ให้มา หลักสูตร AI Assisted Coding
+          Fundamentals ที่ใช้รหัสเดียวกันแสดงเพียงหนึ่งรายการ; หลักสูตร Web Application ระดับ 1–3 แสดงแยกตามรหัส</p>
+      </div>
+    </section>
+    <section class="section alt" id="experience">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Selected Experience</div>
+          <h2>ประสบการณ์การถ่ายทอดความรู้</h2>
+          <p class="sub">รายการต่อไปนี้สรุปจาก CV โดยระบุบทบาทผู้ช่วยวิทยากรในหลักสูตรที่เอกสารกำกับไว้</p>
+        </div>
+        <div class="timeline">
+          <article class="exp-card">
+            <div class="exp-top">
+              <h3>การวิเคราะห์ข้อมูลด้วยโปรแกรม Power BI</h3><span class="date">ก.พ. – ก.ค. 2569</span>
+            </div>
+            <details>
+              <summary>หน่วยงานและบทบาท</summary>
+              <div class="exp-detail">
+                <p>บริษัท บีเคเค (ประเทศไทย) จำกัด และสถาบันพัฒนาฝีมือแรงงาน 3 ชลบุรี, 17 ระยอง, 30 ปราจีนบุรี
+                  รวมถึงบริษัท รับเบอร์แลนด์โปรดักส์ จำกัด สาขามุกดาหาร / สพร. 40 (บางรุ่นระบุผู้ช่วยวิทยากร)</p>
+              </div>
+            </details>
+          </article>
+          <article class="exp-card">
+            <div class="exp-top">
+              <h3>พื้นฐานการใช้ AI สำหรับงานกราฟิกและตกแต่งภาพ</h3><span class="date">มี.ค. 2569</span>
+            </div>
+            <details>
+              <summary>หน่วยงานและบทบาท</summary>
+              <div class="exp-detail">
+                <p>สถาบันพัฒนาฝีมือแรงงาน 3 ชลบุรี · ผู้ช่วยวิทยากร</p>
+              </div>
+            </details>
+          </article>
+          <article class="exp-card">
+            <div class="exp-top">
+              <h3>การประยุกต์เทคโนโลยี AI สำหรับงานโลจิสติกส์</h3><span class="date">เม.ย. 2569</span>
+            </div>
+            <details>
+              <summary>หน่วยงานและบทบาท</summary>
+              <div class="exp-detail">
+                <p>สถาบันพัฒนาฝีมือแรงงาน 3 ชลบุรี และ 13 กรุงเทพมหานคร · ผู้ช่วยวิทยากร</p>
+              </div>
+            </details>
+          </article>
+          <article class="exp-card">
+            <div class="exp-top">
+              <h3>เทคโนโลยี AI สำหรับธุรกิจท่องเที่ยวและบริการ</h3><span class="date">ก.ย. 2569</span>
+            </div>
+            <details>
+              <summary>หน่วยงานและบทบาท</summary>
+              <div class="exp-detail">
+                <p>สถาบันพัฒนาฝีมือแรงงาน 40 มุกดาหาร</p>
+              </div>
+            </details>
+          </article>
+          <article class="exp-card">
+            <div class="exp-top">
+              <h3>การประยุกต์ใช้ AI เพื่อเพิ่มประสิทธิภาพงานเอกสารและการสื่อสาร</h3><span class="date">ก.ย. 2569</span>
+            </div>
+            <details>
+              <summary>หน่วยงานและบทบาท</summary>
+              <div class="exp-detail">
+                <p>บริษัท พีซีซี โพสเทนชั่น จำกัด ณ สถาบันพัฒนาฝีมือแรงงาน 6 ขอนแก่น</p>
+              </div>
+            </details>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="certificates">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Learning &amp; Certificates</div>
+          <h2>ใบรับรองและการพัฒนาทักษะ</h2>
+          <p class="sub">แสดงรายการตามเอกสารประวัติวิทยากร ซึ่งเป็นคอร์สหรือโปรเจกต์ออนไลน์จาก Coursera</p>
+        </div>
+        <div class="cert-grid">
+          <article class="cert">
+            <div class="cert-mark">✦</div>
+            <div>
+              <h3>Agentic AI and AI Agents: A Primer for Leaders</h3>
+              <p>Vanderbilt University · Coursera · 30 มิ.ย. 2569</p><a target="_blank" rel="noopener"
+                href="https://coursera.org/verify/FV9Z0UG44ZWD">ตรวจสอบใบรับรอง ↗</a>
+            </div>
+          </article>
+          <article class="cert">
+            <div class="cert-mark">✦</div>
+            <div>
+              <h3>Getting Started with Google Gemini API</h3>
+              <p>Google DeepMind · Coursera · 30 มิ.ย. 2569</p><a target="_blank" rel="noopener"
+                href="https://coursera.org/verify/REYTP9GS616R">ตรวจสอบใบรับรอง ↗</a>
+            </div>
+          </article>
+          <article class="cert">
+            <div class="cert-mark">✦</div>
+            <div>
+              <h3>Generative AI: Introduction and Applications</h3>
+              <p>IBM · Coursera · 30 มิ.ย. 2569</p><a target="_blank" rel="noopener"
+                href="https://coursera.org/verify/YXU1M7L1WQ38">ตรวจสอบใบรับรอง ↗</a>
+            </div>
+          </article>
+          <article class="cert">
+            <div class="cert-mark">✦</div>
+            <div>
+              <h3>Power BI for Beginners: Interactive Dashboard Fundamentals</h3>
+              <p>Coursera Project · 30 มิ.ย. 2569</p><a target="_blank" rel="noopener"
+                href="https://coursera.org/verify/KEPOO2QCL41A">ตรวจสอบใบรับรอง ↗</a>
+            </div>
+          </article>
+        </div>
+        <p class="notice">หมายเหตุ: ใบรับรอง Coursera เป็นหลักฐานการสำเร็จคอร์สหรือโปรเจกต์ออนไลน์
+          ไม่ใช่วุฒิปริญญาหรือการลงทะเบียนเป็นนักศึกษาของสถาบัน</p>
+      </div>
+    </section>
+    <section class="section contact" id="contact">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Get in Touch</div>
+          <h2>พูดคุยเรื่องการอบรมขององค์กร</h2>
+          <p class="sub">แจ้งหัวข้อ จำนวนผู้เรียน และช่วงเวลาที่ต้องการ เพื่อหารูปแบบการอบรมที่เหมาะสม</p>
+        </div>
+        <div class="contact-grid">
+          <div>
+            <div class="contact-list"><a class="contact-item" href="tel:0991866887"><span class="contact-icon"
+                  aria-hidden="true">☎</span><span><small>โทรศัพท์</small><strong>099-186-6887</strong></span></a><a
+                class="contact-item" href="https://line.me/ti/p/mhdreWudvj" target="_blank" rel="noopener"><span
+                  class="contact-icon" aria-hidden="true">L</span><span><small>LINE ·
+                    samchaieasy</small><strong>เพิ่มเพื่อนผ่าน LINE</strong></span></a><a class="contact-item"
+                href="mailto:coach.sarm@gmail.com"><span class="contact-icon"
+                  aria-hidden="true">✉</span><span><small>อีเมล</small><strong>coach.sarm@gmail.com</strong></span></a><a
+                class="contact-item facebook" href="https://www.facebook.com/coach.sarm" target="_blank"
+                rel="noopener noreferrer"><span class="contact-icon"
+                  aria-hidden="true">f</span><span><small>Facebook</small><strong>ติดตาม Coach Sam</strong></span></a>
+            </div><a class="btn gold"
+              href="mailto:coach.sarm@gmail.com?subject=%E0%B8%AA%E0%B8%AD%E0%B8%9A%E0%B8%96%E0%B8%B2%E0%B8%A1%E0%B9%80%E0%B8%8A%E0%B8%B4%E0%B8%8D%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%81%E0%B8%A3">ส่งอีเมลสอบถาม
+              <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="qrbox">
+            <picture>
+              <source srcset="images/coach-sam-line-qr.webp" type="image/webp"><img src="images/coach-sam-line-qr.jpg"
+                alt="QR Code สำหรับเพิ่มเพื่อน LINE Coach Sam" width="600" height="600" loading="lazy" decoding="async">
+            </picture><strong>สแกนเพื่อเพิ่มเพื่อน LINE</strong><small>LINE ID: samchaieasy</small>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="courseDetailRoot" hidden tabindex="-1"></div>
+  <div class="pretest-modal" id="pretestModal" role="presentation" hidden>
+    <section class="pretest-dialog" role="dialog" aria-modal="true" aria-labelledby="pretestTitle"
+      aria-describedby="pretestCode">
+      <button type="button" class="pretest-close" id="closePretest" aria-label="ปิดหน้าต่าง">×</button>
+      <h2 id="pretestTitle">แบบทดสอบก่อนเรียน</h2>
+      <p id="pretestCode" class="pretest-code"></p>
+      <div class="pretest-view" id="pretestQuizView">
+        <p>เลือกคำตอบที่เหมาะสมที่สุดให้ครบทั้ง 10 ข้อ</p>
+        <div class="pretest-progress" id="pretestProgress"><span>ความคืบหน้า: <strong
+              id="pretestAnsweredCount">0</strong> / 10 ข้อ</span>
+          <div class="pretest-progress-track">
+            <div class="pretest-progress-bar" id="pretestProgressBar"></div>
+          </div>
+        </div>
+        <form id="pretestQuizForm">
+          <div id="pretestQuestions"></div>
+          <div class="pretest-actions"><button class="pretest-primary" type="submit">ส่งข้อสอบ</button></div>
+        </form>
+      </div>
+      <div class="pretest-view" id="pretestContactView" hidden>
+        <p>กรอกข้อมูลเพื่อบันทึกผลและรับคะแนนประเมิน</p>
+        <form id="pretestContactForm">
+          <div class="pretest-form-grid">
+            <label class="pretest-field full">ชื่อ-สกุล (ภาษาไทย หรือ อังกฤษ)<input id="pretestName" name="fullNameTh"
+                autocomplete="name" required maxlength="120"
+                placeholder="เช่น สุทธิพจน์ ศรีแสนยงค์ หรือ Suttiphod Sriseanyong"></label>
+            <label class="pretest-field">อีเมล<input name="email" type="email" autocomplete="email" required
+                maxlength="254"></label>
+            <label class="pretest-field">Line ID<input name="lineId" autocomplete="off" required
+                maxlength="100"></label>
+            <label class="pretest-field">เบอร์โทร<input name="phone" type="tel" autocomplete="tel" inputmode="tel"
+                required maxlength="30"></label>
+            <label class="pretest-field">จังหวัดที่อยู่<select name="province" id="pretestProvince" required>
+                <option value="">เลือกจังหวัด</option>
+              </select></label>
+          </div><label class="pretest-consent"><input type="checkbox" name="consent"
+              required><span>ยินยอมให้เก็บข้อมูลติดต่อและผลคะแนนเพื่อประเมินการเรียนรู้และจัดทำสถิติการอบรม</span></label>
+          <div class="pretest-actions"><button class="pretest-primary" type="button"
+              id="pretestBack">กลับไปแก้คำตอบ</button><button class="pretest-primary" id="pretestSendButton"
+              type="submit">รับคะแนนประเมิน</button></div>
+        </form>
+      </div>
+      <div class="pretest-view" id="pretestResultView" hidden>
+        <p>คะแนน Pre-Test ของคุณ</p>
+        <div class="pretest-score"><span id="pretestScore"></span> <small id="pretestPercent"></small></div>
+        <p>บันทึกผลใน Google Sheets เรียบร้อยแล้ว</p><button class="pretest-primary" type="button"
+          id="pretestDone">เสร็จสิ้น</button>
+      </div>
+      <p class="pretest-status" id="pretestStatus" role="status" aria-live="polite"></p>
+    </section>
+  </div>
+  <iframe name="pretestResponseFrame" id="pretestResponseFrame" title="ผลการส่งแบบทดสอบ" hidden></iframe>
+  <form id="pretestPostForm" method="post" target="pretestResponseFrame"
+    action="https://script.google.com/macros/s/AKfycbxXZSU3FNI1XiHcsm8ERt74DtLmnvMDExVMkeimLiznUEOjL-n-jUDLMU5PSwkYgZQP/exec"
+    hidden><input id="pretestPayload" name="payload"></form>
+
+  .skip:focus {
+  left: .5rem
+  }
+
+  const pretestModal=document.getElementById('pretestModal');
+  const pretestFrame=document.getElementById('pretestResponseFrame');
+  const pretestPostForm=document.getElementById('pretestPostForm');
+  const pretestPayloadField=document.getElementById('pretestPayload');
+  const pretestStatus=document.getElementById('pretestStatus');
+  let activePretest=null;
+  let currentRequestId=null;
+  let submitTimeout=null;
+  function createSubmissionId(){return
+  crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
+  function openPretest(card){
   const code=card.querySelector('.course-meta .code')?.textContent.replace('รหัส ','').trim();
   const title=card.querySelector('h3')?.textContent.trim();
   const group=COURSE_PRETEST_GROUP[code];
@@ -537,26 +1530,43 @@ function openPretest(card){
   document.getElementById('pretestQuizView').hidden=false;
   document.getElementById('pretestContactView').hidden=true;
   document.getElementById('pretestResultView').hidden=true;
-  document.getElementById('pretestQuestions').innerHTML=questions.map((item,index)=>{const options=item[1].map((choice,originalIndex)=>({choice,originalIndex}));for(let i=options.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[options[i],options[j]]=[options[j],options[i]]}return `<fieldset class="quiz-question"><legend><span>ข้อ ${index+1}</span> ${item[0]}</legend>${options.map((option,displayIndex)=>`<label class="quiz-choice"><input type="radio" name="q${index}" value="${option.originalIndex}" required><span class="choice-letter">${'ABCD'[displayIndex]}</span><span>${option.choice}</span></label>`).join('')}</fieldset>`}).join('');
+  document.getElementById('pretestQuestions').innerHTML=questions.map((item,index)=>{const
+  options=item[1].map((choice,originalIndex)=>({choice,originalIndex}));for(let i=options.length-1;i>0;i--){const
+  j=Math.floor(Math.random()*(i+1));[options[i],options[j]]=[options[j],options[i]]}return `<fieldset
+    class="quiz-question">
+    <legend><span>ข้อ ${index+1}</span> ${item[0]}</legend>${options.map((option,displayIndex)=>`<label
+      class="quiz-choice"><input type="radio" name="q${index}" value="${option.originalIndex}" required><span
+        class="choice-letter">${'ABCD'[displayIndex]}</span><span>${option.choice}</span></label>`).join('')}
+  </fieldset>`}).join('');
   document.getElementById('pretestAnsweredCount').textContent='0';
   document.getElementById('pretestProgressBar').style.width='0%';
   pretestStatus.textContent='';
   pretestModal.hidden=false;
   document.body.classList.add('modal-open');
   document.getElementById('closePretest').focus();
-}
-document.getElementById('pretestQuestions').addEventListener('change',()=>{
+  }
+  document.getElementById('pretestQuestions').addEventListener('change',()=>{
   const count=document.querySelectorAll('#pretestQuestions input[type="radio"]:checked').length;
   document.getElementById('pretestAnsweredCount').textContent=String(count);
   document.getElementById('pretestProgressBar').style.width=(count*10)+'%';
-});
-function closePretest(){if(submitTimeout)clearTimeout(submitTimeout);pretestModal.hidden=true;document.body.classList.remove('modal-open');activePretest=null;currentRequestId=null}
-const THAI_PROVINCES=["กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี", "ฉะเชิงเทรา", "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "เชียงราย", "เชียงใหม่", "ตรัง", "ตราด", "ตาก", "นครนายก", "นครปฐม", "นครพนม", "นครราชสีมา", "นครศรีธรรมราช", "นครสวรรค์", "นนทบุรี", "นราธิวาส", "น่าน", "บึงกาฬ", "บุรีรัมย์", "ปทุมธานี", "ประจวบคีรีขันธ์", "ปราจีนบุรี", "ปัตตานี", "พระนครศรีอยุธยา", "พะเยา", "พังงา", "พัทลุง", "พิจิตร", "พิษณุโลก", "เพชรบุรี", "เพชรบูรณ์", "แพร่", "ภูเก็ต", "มหาสารคาม", "มุกดาหาร", "แม่ฮ่องสอน", "ยโสธร", "ยะลา", "ร้อยเอ็ด", "ระนอง", "ระยอง", "ราชบุรี", "ลพบุรี", "ลำปาง", "ลำพูน", "เลย", "ศรีสะเกษ", "สกลนคร", "สงขลา", "สตูล", "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สระแก้ว", "สระบุรี", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สุราษฎร์ธานี", "สุรินทร์", "หนองคาย", "หนองบัวลำภู", "อ่างทอง", "อำนาจเจริญ", "อุดรธานี", "อุตรดิตถ์", "อุทัยธานี", "อุบลราชธานี"];const provinceSelect=document.getElementById("pretestProvince");THAI_PROVINCES.forEach(name=>{const o=document.createElement("option");o.value=name;o.textContent=name;provinceSelect.append(o)});
-document.querySelectorAll('[data-open-pretest]').forEach(button=>button.addEventListener('click',()=>openPretest(button.closest('.course'))));
-document.getElementById('closePretest').addEventListener('click',closePretest);
-pretestModal.addEventListener('click',event=>{if(event.target===pretestModal)closePretest()});
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!pretestModal.hidden)closePretest()});
-document.getElementById('pretestQuizForm').addEventListener('submit',event=>{
+  });
+  function
+  closePretest(){if(submitTimeout)clearTimeout(submitTimeout);pretestModal.hidden=true;document.body.classList.remove('modal-open');activePretest=null;currentRequestId=null}
+  const THAI_PROVINCES=["กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี",
+  "ฉะเชิงเทรา", "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "เชียงราย", "เชียงใหม่", "ตรัง", "ตราด", "ตาก", "นครนายก",
+  "นครปฐม", "นครพนม", "นครราชสีมา", "นครศรีธรรมราช", "นครสวรรค์", "นนทบุรี", "นราธิวาส", "น่าน", "บึงกาฬ", "บุรีรัมย์",
+  "ปทุมธานี", "ประจวบคีรีขันธ์", "ปราจีนบุรี", "ปัตตานี", "พระนครศรีอยุธยา", "พะเยา", "พังงา", "พัทลุง", "พิจิตร",
+  "พิษณุโลก", "เพชรบุรี", "เพชรบูรณ์", "แพร่", "ภูเก็ต", "มหาสารคาม", "มุกดาหาร", "แม่ฮ่องสอน", "ยโสธร", "ยะลา",
+  "ร้อยเอ็ด", "ระนอง", "ระยอง", "ราชบุรี", "ลพบุรี", "ลำปาง", "ลำพูน", "เลย", "ศรีสะเกษ", "สกลนคร", "สงขลา", "สตูล",
+  "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สระแก้ว", "สระบุรี", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สุราษฎร์ธานี",
+  "สุรินทร์", "หนองคาย", "หนองบัวลำภู", "อ่างทอง", "อำนาจเจริญ", "อุดรธานี", "อุตรดิตถ์", "อุทัยธานี",
+  "อุบลราชธานี"];const provinceSelect=document.getElementById("pretestProvince");THAI_PROVINCES.forEach(name=>{const
+  o=document.createElement("option");o.value=name;o.textContent=name;provinceSelect.append(o)});
+  document.querySelectorAll('[data-open-pretest]').forEach(button=>button.addEventListener('click',()=>openPretest(button.closest('.course'))));
+  document.getElementById('closePretest').addEventListener('click',closePretest);
+  pretestModal.addEventListener('click',event=>{if(event.target===pretestModal)closePretest()});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!pretestModal.hidden)closePretest()});
+  document.getElementById('pretestQuizForm').addEventListener('submit',event=>{
   event.preventDefault();
   const values=activePretest.questions.map((_,index)=>new FormData(event.currentTarget).get('q'+index));
   if(values.some(value=>!value)){pretestStatus.textContent='กรุณาตอบคำถามให้ครบทั้ง 10 ข้อ';return}
@@ -565,9 +1575,9 @@ document.getElementById('pretestQuizForm').addEventListener('submit',event=>{
   document.getElementById('pretestContactView').hidden=false;
   pretestStatus.textContent='กรอกข้อมูลเพื่อบันทึกผลและรับคะแนนประเมิน';
   document.getElementById('pretestName').focus();
-});
-document.getElementById('pretestBack').addEventListener('click',()=>{document.getElementById('pretestContactView').hidden=true;document.getElementById('pretestQuizView').hidden=false;pretestStatus.textContent='ตรวจคำตอบก่อนส่งได้ครับ'});
-function handlePretestResponse(data){
+  });
+  document.getElementById('pretestBack').addEventListener('click',()=>{document.getElementById('pretestContactView').hidden=true;document.getElementById('pretestQuizView').hidden=false;pretestStatus.textContent='ตรวจคำตอบก่อนส่งได้ครับ'});
+  function handlePretestResponse(data){
   if(submitTimeout)clearTimeout(submitTimeout);
   document.getElementById('pretestSendButton').disabled=false;
   if(!data||!data.ok){pretestStatus.textContent=(data&&data.message)||'บันทึกผลไม่สำเร็จ กรุณาลองใหม่';return}
@@ -577,112 +1587,216 @@ function handlePretestResponse(data){
   document.getElementById('pretestPercent').textContent=`${Math.round(data.score/data.maxScore*100)}%`;
   pretestStatus.textContent=data.duplicate?'รายการนี้ถูกบันทึกแล้ว':'บันทึกผลใน Google Sheets เรียบร้อย';
   document.getElementById('pretestDone').focus();
-}
-document.getElementById('pretestContactForm').addEventListener('submit',async event=>{
+  }
+  document.getElementById('pretestContactForm').addEventListener('submit',async event=>{
   event.preventDefault();
   if(!activePretest?.answers){pretestStatus.textContent='ไม่พบคำตอบ กรุณาทำข้อสอบอีกครั้ง';return}
   const form=event.currentTarget;
   const values=new FormData(form);
   currentRequestId=activePretest.requestId;
-  const payload={requestId:currentRequestId,courseCode:activePretest.code,fullNameTh:values.get('fullNameTh'),email:values.get('email'),lineId:values.get('lineId'),phone:values.get('phone'),province:values.get('province'),consent:values.get('consent')==='on',answers:activePretest.answers,responseMode:'json'};
+  const
+  payload={requestId:currentRequestId,courseCode:activePretest.code,fullNameTh:values.get('fullNameTh'),email:values.get('email'),lineId:values.get('lineId'),phone:values.get('phone'),province:values.get('province'),consent:values.get('consent')==='on',answers:activePretest.answers,responseMode:'json'};
   document.getElementById('pretestSendButton').disabled=true;
   pretestStatus.innerHTML='<span class="pretest-spinner" aria-hidden="true"></span>กำลังบันทึกผลแบบทดสอบและตรวจคะแนน…';
   try{
-    const controller=new AbortController();
-    submitTimeout=setTimeout(()=>controller.abort(),25000);
-    const res=await fetch(PRETEST_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),redirect:'follow',signal:controller.signal});
-    clearTimeout(submitTimeout);
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    if(data.requestId===currentRequestId){handlePretestResponse(data);return}
-    throw new Error('Invalid response ID');
+  const controller=new AbortController();
+  submitTimeout=setTimeout(()=>controller.abort(),25000);
+  const res=await
+  fetch(PRETEST_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),redirect:'follow',signal:controller.signal});
+  clearTimeout(submitTimeout);
+  if(!res.ok)throw new Error('HTTP '+res.status);
+  const data=await res.json();
+  if(data.requestId===currentRequestId){handlePretestResponse(data);return}
+  throw new Error('Invalid response ID');
   }catch(err){
-    if(err&&err.name==='AbortError'){
-      document.getElementById('pretestSendButton').disabled=false;
-      pretestStatus.textContent='การเชื่อมต่อใช้เวลานานกว่าปกติ กรุณาลองกดส่งอีกครั้ง';
-      return;
-    }
-    delete payload.responseMode;
-    pretestPayloadField.value=JSON.stringify(payload);
-    pretestPostForm.submit();
-    submitTimeout=setTimeout(()=>{document.getElementById('pretestSendButton').disabled=false;pretestStatus.textContent='ยังไม่ได้รับคำยืนยันจากชีต ผลอาจบันทึกแล้ว หากลองส่งซ้ำ ระบบจะตรวจรายการเดิม';},30000);
+  if(err&&err.name==='AbortError'){
+  document.getElementById('pretestSendButton').disabled=false;
+  pretestStatus.textContent='การเชื่อมต่อใช้เวลานานกว่าปกติ กรุณาลองกดส่งอีกครั้ง';
+  return;
   }
-});
-window.addEventListener('message',event=>{
+  delete payload.responseMode;
+  pretestPayloadField.value=JSON.stringify(payload);
+  pretestPostForm.submit();
+  submitTimeout=setTimeout(()=>{document.getElementById('pretestSendButton').disabled=false;pretestStatus.textContent='ยังไม่ได้รับคำยืนยันจากชีต
+  ผลอาจบันทึกแล้ว หากลองส่งซ้ำ ระบบจะตรวจรายการเดิม';},30000);
+  }
+  });
+  window.addEventListener('message',event=>{
   if(event.source!==pretestFrame.contentWindow)return;
   if((!event.origin.endsWith('googleusercontent.com')&&!event.origin.endsWith('google.com'))||!event.data||event.data.requestId!==currentRequestId)return;
   handlePretestResponse(event.data);
-});
-document.getElementById('pretestDone').addEventListener('click',closePretest);
+  });
+  document.getElementById('pretestDone').addEventListener('click',closePretest);
 
 
 
-// Course detail pages use concise editorial summaries; formal eligibility follows the linked curriculum.
-const COURSE_PROFILE={
-'0920014220601':{objective:'เสริมความสามารถในการวางแผนและบริหารโครงการพัฒนาซอฟต์แวร์ให้ทำงานไปตามขอบเขตและเป้าหมาย',benefits:['กำหนดขอบเขตและแผนงาน','ติดตามความคืบหน้าและจัดการความเสี่ยง','ประสานงานทีมและประเมินการส่งมอบ'],eligibility:'คุณสมบัติตามประกาศรับสมัครของหน่วยงานผู้จัด กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
-'10120014220115':{objective:'พัฒนาความเข้าใจการใช้ AI เป็นผู้ช่วยในกระบวนการเขียนโค้ดและพัฒนานวัตกรรมดิจิทัล',benefits:['ตั้งโจทย์ให้เครื่องมือ AI ช่วยงานเขียนโปรแกรม','ตรวจทานและปรับปรุงโค้ดที่ได้รับความช่วยเหลือ','คำนึงถึงความถูกต้องและความปลอดภัยของผลงาน'],eligibility:'คุณสมบัติตามประกาศรับสมัครของหน่วยงานผู้จัด กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
-'0920224190208':{objective:'เสริมความรู้และทักษะด้านการประมวลผลภาพและการประยุกต์ใช้เทคโนโลยีปัญญาประดิษฐ์',benefits:['เข้าใจขั้นตอนการจัดเตรียมและประมวลผลภาพ','รู้จักแนวทางประยุกต์ AI กับข้อมูลภาพ','ฝึกวิเคราะห์ผลลัพธ์จากงานประมวลผลภาพ'],eligibility:'คุณสมบัติตามประกาศรับสมัครของหน่วยงานผู้จัด กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
-'0920084220103':{objective:'สร้างพื้นฐานการพัฒนาเว็บแอปพลิเคชันตามสมรรถนะของหลักสูตรระดับ 1',benefits:['รู้จักองค์ประกอบพื้นฐานของเว็บแอปพลิเคชัน','ฝึกทักษะตามหน่วยการเรียนของหลักสูตร','เตรียมพื้นฐานสำหรับการเรียนระดับถัดไป'],eligibility:'ตรวจสอบคุณสมบัติและพื้นฐานที่กำหนดจากเอกสารหลักสูตรหรือประกาศรับสมัคร'},
-'0920084220104':{objective:'พัฒนาสมรรถนะการพัฒนาเว็บแอปพลิเคชันระดับ 2 โดยเน้น JavaScript และการเขียนโปรแกรม',benefits:['ใช้ JavaScript และ ES6','เขียนคำสั่ง ออบเจ็กต์ ฟังก์ชัน และ Regular Expression','รวม 30 ชั่วโมง แบ่งเป็นทฤษฎี 10 ชั่วโมงและปฏิบัติ 20 ชั่วโมง'],eligibility:'อายุอย่างน้อย 18 ปี มีประสบการณ์พัฒนาเว็บแอปพลิเคชันอย่างน้อย 1 ปี และผ่านหลักสูตรระดับ 1 ตามเอกสารหลักสูตร'},
-'0920084220105':{objective:'พัฒนาสมรรถนะการพัฒนาเว็บแอปพลิเคชันระดับ 3 ในหัวข้อ JavaScript ขั้นสูง',benefits:['สร้างและจัดการฟีเจอร์ของออบเจ็กต์','ทำงานกับคลาส คอลเลคชัน และอิเทอเรเตอร์','พัฒนาโปรแกรมแบบอะซิงโครนัสและใช้โมดูล','รวม 30 ชั่วโมง แบ่งเป็นทฤษฎี 10 ชั่วโมงและปฏิบัติ 20 ชั่วโมง'],eligibility:'อายุอย่างน้อย 18 ปี มีประสบการณ์พัฒนาเว็บแอปพลิเคชันอย่างน้อย 1 ปี และผ่านหลักสูตรระดับ 2 ตามเอกสารหลักสูตร'},
-'0920224220118':{objective:'เสริมทักษะการพัฒนาร้านค้าออนไลน์และการดำเนินธุรกิจอีคอมเมิร์ซ',benefits:['ทำความเข้าใจองค์ประกอบของร้านค้าออนไลน์','วางแนวทางการนำเสนอสินค้าและบริการ','เชื่อมโยงการขายออนไลน์กับการทำธุรกิจ'],eligibility:'รายละเอียดคุณสมบัติและเนื้อหาทางการยังไม่มีเอกสารแนบ กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
-'0920224220110':{objective:'เสริมทักษะการออกแบบและสร้างแอปพลิเคชันที่เกี่ยวข้องกับการท่องเที่ยว',benefits:['วิเคราะห์โจทย์การใช้งานด้านการท่องเที่ยว','วางโครงสร้างประสบการณ์ผู้ใช้และฟังก์ชัน','ต่อยอดแนวคิดเป็นต้นแบบแอปพลิเคชัน'],eligibility:'รายละเอียดคุณสมบัติและเนื้อหาทางการยังไม่มีเอกสารแนบ กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
-'0920014220305':{objective:'เรียนรู้การออกแบบประสบการณ์ผู้ใช้และส่วนติดต่อผู้ใช้ให้เหมาะกับความต้องการของผู้ใช้',benefits:['ทำความเข้าใจผู้ใช้และโจทย์การใช้งาน','จัดโครงสร้างและออกแบบส่วนติดต่อผู้ใช้','สื่อสารแนวคิดผ่านแบบร่างหรือต้นแบบ'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
-'10120014220103':{objective:'พัฒนาทักษะสร้างเว็บแอปพลิเคชันด้วย React',benefits:['เข้าใจแนวคิดการสร้างส่วนประกอบของหน้าจอ','ฝึกจัดการข้อมูลและการโต้ตอบของเว็บแอป','นำแนวคิด React ไปต่อยอดกับงานพัฒนา'],eligibility:'รายละเอียดคุณสมบัติและเนื้อหาทางการยังไม่มีเอกสารแนบ กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
-'10020084220605':{objective:'เสริมทักษะการใช้ภาษา JavaScript สำหรับการพัฒนาเว็บไซต์',benefits:['เข้าใจโครงสร้างและคำสั่งภาษา JavaScript','เขียนการโต้ตอบบนหน้าเว็บไซต์','ฝึกนำ JavaScript ไปใช้กับโจทย์พัฒนาเว็บไซต์'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
-'10120014220610':{objective:'ประยุกต์ใช้ AI เพื่อช่วยเพิ่มประสิทธิภาพการจัดทำเอกสารและการสื่อสาร',benefits:['เลือกงานเอกสารที่เหมาะกับการใช้ AI','ร่างและปรับปรุงเนื้อหาเพื่อการสื่อสาร','ตรวจทานความถูกต้องก่อนนำผลลัพธ์ไปใช้'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
-'2220017230213':{objective:'ประยุกต์ AI กับการทำคอนเทนต์ การตลาด และการขายผ่านช่องทางออนไลน์',benefits:['วางแนวทางคอนเทนต์สำหรับกลุ่มเป้าหมาย','ใช้ AI ช่วยจัดทำและปรับเนื้อหา','เชื่อมโยงการตลาดออนไลน์กับการขาย'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
-'50200172304104':{objective:'เสริมความเข้าใจการทำธุรกิจและการขายผ่านเครือข่ายออนไลน์',benefits:['เข้าใจช่องทางและรูปแบบธุรกิจออนไลน์','วางการนำเสนอสินค้าและบริการบนเครือข่าย','พิจารณาการสื่อสารกับลูกค้าผ่านช่องทางดิจิทัล'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
-'0920014220605':{objective:'พัฒนาทักษะการวิเคราะห์ข้อมูลและการสร้างรายงานด้วย Power BI',benefits:['เตรียมและจัดการข้อมูลสำหรับการวิเคราะห์','สร้างภาพข้อมูลและรายงาน','สื่อสารข้อค้นพบผ่านแดชบอร์ด'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
-'0920014220405':{objective:'เสริมทักษะการวิเคราะห์ข้อมูลโดยใช้ Excel และ Power BI',benefits:['จัดระเบียบข้อมูลเพื่อการวิเคราะห์','ใช้ Excel และ Power BI ช่วยสรุปข้อมูล','นำเสนอผลการวิเคราะห์ในรูปแบบรายงาน'],eligibility:'รายละเอียดคุณสมบัติและเนื้อหาทางการยังไม่มีเอกสารแนบ กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
-'2220017320213':{objective:'ประยุกต์เทคโนโลยี AI กับบริบทของธุรกิจท่องเที่ยวและบริการ',benefits:['มองเห็นกรณีใช้งาน AI ในธุรกิจบริการ','พิจารณาการใช้ AI เพื่อสนับสนุนงานและประสบการณ์ลูกค้า','คำนึงถึงการตรวจสอบผลลัพธ์ก่อนนำไปใช้'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
-'0920224220116':{objective:'ยกระดับการใช้ Google Applications เพื่อสนับสนุนการทำงานและธุรกิจ',benefits:['เลือกใช้แอป Google ให้เหมาะกับงาน','ทำงานกับเอกสารและข้อมูลร่วมกัน','ประยุกต์เครื่องมือดิจิทัลกับกระบวนการธุรกิจ'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
-'0920014220406':{objective:'สร้างความเข้าใจพื้นฐานเกี่ยวกับทักษะ AI ของ Microsoft สำหรับการทำงานในองค์กร',benefits:['รู้จักแนวทางใช้ AI ในงานประจำ','พิจารณาการใช้เครื่องมือ AI ในบริบทองค์กร','ตรวจทานผลลัพธ์และใช้งานอย่างรับผิดชอบ'],eligibility:'หลักสูตรระบุว่าสำหรับองค์กรและภาคธุรกิจ โปรดตรวจสอบเงื่อนไขกับผู้จัดอบรม'},
-'10120014220801':{objective:'ประยุกต์ใช้ Generative AI ในบริบทขององค์กรและภาคธุรกิจ',benefits:['รู้จักแนวทางใช้ Generative AI ในการทำงาน','ออกแบบโจทย์และตรวจทานผลลัพธ์','พิจารณาความปลอดภัยและการใช้งานอย่างรับผิดชอบ'],eligibility:'หลักสูตรระบุว่าสำหรับองค์กรและภาคธุรกิจ โปรดตรวจสอบเงื่อนไขกับผู้จัดอบรม'},
-'10120014220504':{objective:'สร้างความเข้าใจเรื่องกฎหมายดิจิทัลที่เกี่ยวข้องกับผู้ใช้งานทั่วไป',benefits:['รู้จักประเด็นกฎหมายดิจิทัลพื้นฐาน','ตระหนักถึงสิทธิและความรับผิดชอบในการใช้งาน','นำความรู้ไปพิจารณาพฤติกรรมออนไลน์อย่างเหมาะสม'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'}
-};
-function courseCards(){return Array.from(document.querySelectorAll('.course'))}
-function courseCardData(card){
- const title=card.querySelector('h3')?.textContent.trim()||'';
- const code=(card.querySelector('.code')?.textContent||'').replace(/^รหัส\s*/,'').trim();
- const level=card.querySelector('.level')?.textContent.trim()||'';
- const docs=Array.from(card.querySelectorAll('.course-details a.course-link')).map(a=>({href:a.href,label:a.textContent.trim().replace(/\s*↗$/,'')}));
- const inquiry=card.querySelector('.course-details .inquiry')?.textContent.trim()||'';
- const profile=COURSE_PROFILE[code]||{};
- return {card,title,code,level,docs,inquiry,profile};
-}
-const COURSE_CATALOG=new Map(courseCards().map(card=>{const data=courseCardData(card);return[data.code,data]}));
-courseCards().forEach(card=>{
- const data=courseCardData(card),details=card.querySelector('details');
- if(!details)return;
- const title=document.createElement('h3');title.className='course-card-title';title.textContent=data.title;
- const titleRow=document.createElement('div');titleRow.className='course-title-row';titleRow.appendChild(title);
- const link=document.createElement('a');link.className='course-details-link';link.href='courses/'+encodeURIComponent(data.code)+'.html';link.setAttribute('aria-label','ดูรายละเอียดหลักสูตร '+data.title);link.innerHTML='<span>ดูรายละเอียด</span><span aria-hidden="true">→</span>';titleRow.appendChild(link);details.replaceWith(titleRow);
-});
-function htmlSafe(value){return String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]))}
-function renderCourseDetail(){
- const code=new URLSearchParams(location.search).get('course');if(!code)return;
- const data=COURSE_CATALOG.get(code),root=document.getElementById('courseDetailRoot'),main=document.getElementById('main');root.hidden=false;main.hidden=true;
- document.querySelectorAll('.footer,.mobile-contact').forEach(node=>node.hidden=true);
- const brand=document.querySelector('.brand');if(brand)brand.href='./#home';document.querySelectorAll('.links a').forEach(link=>{const key=(link.getAttribute('href')||'').replace(/^#/,'');if(key)link.href='./#'+key});
- const skip=document.querySelector('.skip');if(skip)skip.href='#courseDetailRoot';
- if(!data){document.title='ไม่พบหลักสูตร | Coach Sam';root.innerHTML='<main class="course-detail-page"><div class="course-detail-wrap"><h1>ไม่พบหลักสูตร</h1><p>ลิงก์หลักสูตรนี้อาจไม่ถูกต้องหรือไม่มีในรายการ</p><a class="btn navy" href="./#courses">กลับไปหน้าหลักสูตรอบรม</a></div></main>';return}
- const {title,level,docs,inquiry,profile}=data,benefits=profile.benefits||['ดูหัวข้อและขอบเขตการเรียนในเอกสารหลักสูตร','สอบถามรูปแบบการอบรมและรายละเอียดจากผู้จัด','เลือกเนื้อหาที่สอดคล้องกับเป้าหมายการทำงาน'];
- const docsMarkup=docs.length?'<div class="course-detail-docs">'+docs.map(doc=>'<a href="'+htmlSafe(doc.href)+'" target="_blank" rel="noopener">'+htmlSafe(doc.label)+' ↗</a>').join('')+'</div>':'<p class="course-detail-missing">ยังไม่มีเอกสารหลักสูตรแนบ กรุณาติดต่อเพื่อสอบถามรายละเอียดและยืนยันเงื่อนไขการอบรม</p>';
- document.title=title+' | Coach Sam';
- root.innerHTML='<main class="course-detail-page"><div class="course-detail-wrap"><nav class="course-breadcrumb" aria-label="เส้นทางนำทาง"><a href="./#home">หน้าแรก</a><span aria-hidden="true">/</span><a href="./#courses">หลักสูตรฝึกอบรม</a><span aria-hidden="true">/</span><span aria-current="page">รายละเอียด</span></nav><article class="course-detail-card"><div class="course-detail-kicker">Course overview</div><div class="course-detail-heading-row"><h1 class="course-detail-title">'+htmlSafe(title)+'</h1><button class="course-share-button" id="shareCourseButton" type="button" aria-label="แชร์หลักสูตร '+htmlSafe(title)+'">แชร์หลักสูตร</button></div><p class="course-share-status" id="courseShareStatus" role="status" aria-live="polite"></p><div class="course-detail-meta"><span>รหัส '+htmlSafe(code)+'</span><span>'+htmlSafe(level)+'</span></div><p class="course-detail-intro">บทสรุปย่อจากชื่อและหัวข้อหลักสูตร เพื่อช่วยเลือกหลักสูตรเบื้องต้น รายละเอียดทางการให้ยึดตามเอกสารหรือประกาศของหน่วยงานผู้จัด</p><section class="course-info-section"><h2>วัตถุประสงค์</h2><p>'+htmlSafe(profile.objective||'เพื่อเสริมความรู้และทักษะตามหัวข้อหลักสูตร โปรดตรวจสอบวัตถุประสงค์ฉบับเต็มจากเอกสารทางการ')+'</p></section><section class="course-info-section"><h2>สิ่งที่คาดว่าจะได้รับจากหลักสูตร</h2><ul>'+benefits.map(item=>'<li>'+htmlSafe(item)+'</li>').join('')+'</ul></section><section class="course-info-section"><h2>คุณสมบัติผู้เข้าร่วมอบรม</h2><p>'+htmlSafe(profile.eligibility||'คุณสมบัติตามประกาศรับสมัครของหน่วยงานผู้จัด กรุณาติดต่อเพื่อยืนยันก่อนสมัคร')+'</p></section><section class="course-info-section"><h2>เอกสารและรายละเอียดหลักสูตร</h2>'+docsMarkup+'</section><p class="course-detail-note">'+(docs.length?'วัตถุประสงค์และผลลัพธ์ข้างต้นเป็นบทสรุปย่อ ไม่ใช่ถ้อยคำทางการ โปรดอ้างอิงเอกสารหลักสูตรสำหรับรายละเอียดและคุณสมบัติฉบับเต็ม':'ยังไม่มีเอกสารหลักสูตรแนบ ข้อมูลสรุปนี้ใช้ประกอบการพิจารณาเบื้องต้น โปรดติดต่อผู้จัดเพื่อยืนยันรายละเอียดและคุณสมบัติ')+'</p><div class="course-detail-actions"><button class="btn navy" id="coursePretestButton" type="button">สำรวจก่อนเรียน (Pre-Test)</button><a class="btn back-course" href="./#courses">กลับไปหน้าหลักสูตรอบรม</a></div></article></div></main>';
- root.querySelector('#coursePretestButton').addEventListener('click',()=>openPretest(data.card));
- if(location.hash==='#pretest'){setTimeout(()=>openPretest(data.card),50)}
- root.querySelector('#shareCourseButton').addEventListener('click',async()=>{
-  const status=root.querySelector('#courseShareStatus'),shareData={title:title,text:'หลักสูตรฝึกอบรม Coach Sam',url:location.href};
-  if(navigator.share){try{await navigator.share(shareData);status.textContent='เปิดเมนูแชร์หลักสูตรแล้ว';return}catch(error){if(error&&error.name==='AbortError')return}}
-  try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(location.href);status.textContent='คัดลอกลิงก์หลักสูตรแล้ว';return}}catch(error){}
-  const field=document.createElement('textarea');field.value=location.href;field.setAttribute('readonly','');field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();
-  let copied=false;try{copied=document.execCommand('copy')}catch(error){}field.remove();
-  status.textContent=copied?'คัดลอกลิงก์หลักสูตรแล้ว':'คัดลอกลิงก์นี้: '+location.href;
- });
- root.focus();
-}
-renderCourseDetail();
+  // Course detail pages use concise editorial summaries; formal eligibility follows the linked curriculum.
+  const COURSE_PROFILE={
+  '0920014220601':{objective:'เสริมความสามารถในการวางแผนและบริหารโครงการพัฒนาซอฟต์แวร์ให้ทำงานไปตามขอบเขตและเป้าหมาย',benefits:['กำหนดขอบเขตและแผนงาน','ติดตามความคืบหน้าและจัดการความเสี่ยง','ประสานงานทีมและประเมินการส่งมอบ'],eligibility:'คุณสมบัติตามประกาศรับสมัครของหน่วยงานผู้จัด
+  กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
+  '10120014220115':{objective:'พัฒนาความเข้าใจการใช้ AI
+  เป็นผู้ช่วยในกระบวนการเขียนโค้ดและพัฒนานวัตกรรมดิจิทัล',benefits:['ตั้งโจทย์ให้เครื่องมือ AI
+  ช่วยงานเขียนโปรแกรม','ตรวจทานและปรับปรุงโค้ดที่ได้รับความช่วยเหลือ','คำนึงถึงความถูกต้องและความปลอดภัยของผลงาน'],eligibility:'คุณสมบัติตามประกาศรับสมัครของหน่วยงานผู้จัด
+  กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
+  '0920224190208':{objective:'เสริมความรู้และทักษะด้านการประมวลผลภาพและการประยุกต์ใช้เทคโนโลยีปัญญาประดิษฐ์',benefits:['เข้าใจขั้นตอนการจัดเตรียมและประมวลผลภาพ','รู้จักแนวทางประยุกต์
+  AI กับข้อมูลภาพ','ฝึกวิเคราะห์ผลลัพธ์จากงานประมวลผลภาพ'],eligibility:'คุณสมบัติตามประกาศรับสมัครของหน่วยงานผู้จัด
+  กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
+  '0920084220103':{objective:'สร้างพื้นฐานการพัฒนาเว็บแอปพลิเคชันตามสมรรถนะของหลักสูตรระดับ
+  1',benefits:['รู้จักองค์ประกอบพื้นฐานของเว็บแอปพลิเคชัน','ฝึกทักษะตามหน่วยการเรียนของหลักสูตร','เตรียมพื้นฐานสำหรับการเรียนระดับถัดไป'],eligibility:'ตรวจสอบคุณสมบัติและพื้นฐานที่กำหนดจากเอกสารหลักสูตรหรือประกาศรับสมัคร'},
+  '0920084220104':{objective:'พัฒนาสมรรถนะการพัฒนาเว็บแอปพลิเคชันระดับ 2 โดยเน้น JavaScript
+  และการเขียนโปรแกรม',benefits:['ใช้ JavaScript และ ES6','เขียนคำสั่ง ออบเจ็กต์ ฟังก์ชัน และ Regular Expression','รวม 30
+  ชั่วโมง แบ่งเป็นทฤษฎี 10 ชั่วโมงและปฏิบัติ 20 ชั่วโมง'],eligibility:'อายุอย่างน้อย 18 ปี
+  มีประสบการณ์พัฒนาเว็บแอปพลิเคชันอย่างน้อย 1 ปี และผ่านหลักสูตรระดับ 1 ตามเอกสารหลักสูตร'},
+  '0920084220105':{objective:'พัฒนาสมรรถนะการพัฒนาเว็บแอปพลิเคชันระดับ 3 ในหัวข้อ JavaScript
+  ขั้นสูง',benefits:['สร้างและจัดการฟีเจอร์ของออบเจ็กต์','ทำงานกับคลาส คอลเลคชัน
+  และอิเทอเรเตอร์','พัฒนาโปรแกรมแบบอะซิงโครนัสและใช้โมดูล','รวม 30 ชั่วโมง แบ่งเป็นทฤษฎี 10 ชั่วโมงและปฏิบัติ 20
+  ชั่วโมง'],eligibility:'อายุอย่างน้อย 18 ปี มีประสบการณ์พัฒนาเว็บแอปพลิเคชันอย่างน้อย 1 ปี และผ่านหลักสูตรระดับ 2
+  ตามเอกสารหลักสูตร'},
+  '0920224220118':{objective:'เสริมทักษะการพัฒนาร้านค้าออนไลน์และการดำเนินธุรกิจอีคอมเมิร์ซ',benefits:['ทำความเข้าใจองค์ประกอบของร้านค้าออนไลน์','วางแนวทางการนำเสนอสินค้าและบริการ','เชื่อมโยงการขายออนไลน์กับการทำธุรกิจ'],eligibility:'รายละเอียดคุณสมบัติและเนื้อหาทางการยังไม่มีเอกสารแนบ
+  กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
+  '0920224220110':{objective:'เสริมทักษะการออกแบบและสร้างแอปพลิเคชันที่เกี่ยวข้องกับการท่องเที่ยว',benefits:['วิเคราะห์โจทย์การใช้งานด้านการท่องเที่ยว','วางโครงสร้างประสบการณ์ผู้ใช้และฟังก์ชัน','ต่อยอดแนวคิดเป็นต้นแบบแอปพลิเคชัน'],eligibility:'รายละเอียดคุณสมบัติและเนื้อหาทางการยังไม่มีเอกสารแนบ
+  กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
+  '0920014220305':{objective:'เรียนรู้การออกแบบประสบการณ์ผู้ใช้และส่วนติดต่อผู้ใช้ให้เหมาะกับความต้องการของผู้ใช้',benefits:['ทำความเข้าใจผู้ใช้และโจทย์การใช้งาน','จัดโครงสร้างและออกแบบส่วนติดต่อผู้ใช้','สื่อสารแนวคิดผ่านแบบร่างหรือต้นแบบ'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
+  '10120014220103':{objective:'พัฒนาทักษะสร้างเว็บแอปพลิเคชันด้วย
+  React',benefits:['เข้าใจแนวคิดการสร้างส่วนประกอบของหน้าจอ','ฝึกจัดการข้อมูลและการโต้ตอบของเว็บแอป','นำแนวคิด React
+  ไปต่อยอดกับงานพัฒนา'],eligibility:'รายละเอียดคุณสมบัติและเนื้อหาทางการยังไม่มีเอกสารแนบ
+  กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
+  '10020084220605':{objective:'เสริมทักษะการใช้ภาษา JavaScript
+  สำหรับการพัฒนาเว็บไซต์',benefits:['เข้าใจโครงสร้างและคำสั่งภาษา JavaScript','เขียนการโต้ตอบบนหน้าเว็บไซต์','ฝึกนำ
+  JavaScript
+  ไปใช้กับโจทย์พัฒนาเว็บไซต์'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
+  '10120014220610':{objective:'ประยุกต์ใช้ AI
+  เพื่อช่วยเพิ่มประสิทธิภาพการจัดทำเอกสารและการสื่อสาร',benefits:['เลือกงานเอกสารที่เหมาะกับการใช้
+  AI','ร่างและปรับปรุงเนื้อหาเพื่อการสื่อสาร','ตรวจทานความถูกต้องก่อนนำผลลัพธ์ไปใช้'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
+  '2220017230213':{objective:'ประยุกต์ AI กับการทำคอนเทนต์ การตลาด
+  และการขายผ่านช่องทางออนไลน์',benefits:['วางแนวทางคอนเทนต์สำหรับกลุ่มเป้าหมาย','ใช้ AI
+  ช่วยจัดทำและปรับเนื้อหา','เชื่อมโยงการตลาดออนไลน์กับการขาย'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
+  '50200172304104':{objective:'เสริมความเข้าใจการทำธุรกิจและการขายผ่านเครือข่ายออนไลน์',benefits:['เข้าใจช่องทางและรูปแบบธุรกิจออนไลน์','วางการนำเสนอสินค้าและบริการบนเครือข่าย','พิจารณาการสื่อสารกับลูกค้าผ่านช่องทางดิจิทัล'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
+  '0920014220605':{objective:'พัฒนาทักษะการวิเคราะห์ข้อมูลและการสร้างรายงานด้วย Power
+  BI',benefits:['เตรียมและจัดการข้อมูลสำหรับการวิเคราะห์','สร้างภาพข้อมูลและรายงาน','สื่อสารข้อค้นพบผ่านแดชบอร์ด'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
+  '0920014220405':{objective:'เสริมทักษะการวิเคราะห์ข้อมูลโดยใช้ Excel และ Power
+  BI',benefits:['จัดระเบียบข้อมูลเพื่อการวิเคราะห์','ใช้ Excel และ Power BI
+  ช่วยสรุปข้อมูล','นำเสนอผลการวิเคราะห์ในรูปแบบรายงาน'],eligibility:'รายละเอียดคุณสมบัติและเนื้อหาทางการยังไม่มีเอกสารแนบ
+  กรุณาติดต่อเพื่อยืนยันก่อนสมัคร'},
+  '2220017320213':{objective:'ประยุกต์เทคโนโลยี AI กับบริบทของธุรกิจท่องเที่ยวและบริการ',benefits:['มองเห็นกรณีใช้งาน AI
+  ในธุรกิจบริการ','พิจารณาการใช้ AI
+  เพื่อสนับสนุนงานและประสบการณ์ลูกค้า','คำนึงถึงการตรวจสอบผลลัพธ์ก่อนนำไปใช้'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
+  '0920224220116':{objective:'ยกระดับการใช้ Google Applications เพื่อสนับสนุนการทำงานและธุรกิจ',benefits:['เลือกใช้แอป
+  Google
+  ให้เหมาะกับงาน','ทำงานกับเอกสารและข้อมูลร่วมกัน','ประยุกต์เครื่องมือดิจิทัลกับกระบวนการธุรกิจ'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'},
+  '0920014220406':{objective:'สร้างความเข้าใจพื้นฐานเกี่ยวกับทักษะ AI ของ Microsoft
+  สำหรับการทำงานในองค์กร',benefits:['รู้จักแนวทางใช้ AI ในงานประจำ','พิจารณาการใช้เครื่องมือ AI
+  ในบริบทองค์กร','ตรวจทานผลลัพธ์และใช้งานอย่างรับผิดชอบ'],eligibility:'หลักสูตรระบุว่าสำหรับองค์กรและภาคธุรกิจ
+  โปรดตรวจสอบเงื่อนไขกับผู้จัดอบรม'},
+  '10120014220801':{objective:'ประยุกต์ใช้ Generative AI ในบริบทขององค์กรและภาคธุรกิจ',benefits:['รู้จักแนวทางใช้
+  Generative AI
+  ในการทำงาน','ออกแบบโจทย์และตรวจทานผลลัพธ์','พิจารณาความปลอดภัยและการใช้งานอย่างรับผิดชอบ'],eligibility:'หลักสูตรระบุว่าสำหรับองค์กรและภาคธุรกิจ
+  โปรดตรวจสอบเงื่อนไขกับผู้จัดอบรม'},
+  '10120014220504':{objective:'สร้างความเข้าใจเรื่องกฎหมายดิจิทัลที่เกี่ยวข้องกับผู้ใช้งานทั่วไป',benefits:['รู้จักประเด็นกฎหมายดิจิทัลพื้นฐาน','ตระหนักถึงสิทธิและความรับผิดชอบในการใช้งาน','นำความรู้ไปพิจารณาพฤติกรรมออนไลน์อย่างเหมาะสม'],eligibility:'ตรวจสอบคุณสมบัติจากเอกสารหลักสูตรและประกาศรับสมัครของหน่วยงานผู้จัด'}
+  };
+  function courseCards(){return Array.from(document.querySelectorAll('.course'))}
+  function courseCardData(card){
+  const title=card.querySelector('h3')?.textContent.trim()||'';
+  const code=(card.querySelector('.code')?.textContent||'').replace(/^รหัส\s*/,'').trim();
+  const level=card.querySelector('.level')?.textContent.trim()||'';
+  const docs=Array.from(card.querySelectorAll('.course-details
+  a.course-link')).map(a=>({href:a.href,label:a.textContent.trim().replace(/\s*↗$/,'')}));
+  const inquiry=card.querySelector('.course-details .inquiry')?.textContent.trim()||'';
+  const profile=COURSE_PROFILE[code]||{};
+  return {card,title,code,level,docs,inquiry,profile};
+  }
+  const COURSE_CATALOG=new Map(courseCards().map(card=>{const data=courseCardData(card);return[data.code,data]}));
+  courseCards().forEach(card=>{
+  const data=courseCardData(card),details=card.querySelector('details');
+  if(!details)return;
+  const title=document.createElement('h3');title.className='course-card-title';title.textContent=data.title;
+  const titleRow=document.createElement('div');titleRow.className='course-title-row';titleRow.appendChild(title);
+  const
+  link=document.createElement('a');link.className='course-details-link';link.href='courses/'+encodeURIComponent(data.code)+'.html';link.setAttribute('aria-label','ดูรายละเอียดหลักสูตร
+  '+data.title);link.innerHTML='<span>ดูรายละเอียด</span><span
+    aria-hidden="true">→</span>';titleRow.appendChild(link);details.replaceWith(titleRow);
+  });
+  function htmlSafe(value){return String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>
+      ':'&gt;','"':'&quot;',"'":'&#39;'}[char]))}
+      function renderCourseDetail(){
+      const code=new URLSearchParams(location.search).get('course');if(!code)return;
+      const
+      data=COURSE_CATALOG.get(code),root=document.getElementById('courseDetailRoot'),main=document.getElementById('main');root.hidden=false;main.hidden=true;
+      document.querySelectorAll('.footer,.mobile-contact').forEach(node=>node.hidden=true);
+      const brand=document.querySelector('.brand');if(brand)brand.href='./#home';document.querySelectorAll('.links
+      a').forEach(link=>{const key=(link.getAttribute('href')||'').replace(/^#/,'');if(key)link.href='./#'+key});
+      const skip=document.querySelector('.skip');if(skip)skip.href='#courseDetailRoot';
+      if(!data){document.title='ไม่พบหลักสูตร | Coach Sam';root.innerHTML='<main class="course-detail-page">
+        <div class="course-detail-wrap">
+          <h1>ไม่พบหลักสูตร</h1>
+          <p>ลิงก์หลักสูตรนี้อาจไม่ถูกต้องหรือไม่มีในรายการ</p><a class="btn navy"
+            href="./#courses">กลับไปหน้าหลักสูตรอบรม</a>
+        </div>
+      </main>';return}
+      const
+      {title,level,docs,inquiry,profile}=data,benefits=profile.benefits||['ดูหัวข้อและขอบเขตการเรียนในเอกสารหลักสูตร','สอบถามรูปแบบการอบรมและรายละเอียดจากผู้จัด','เลือกเนื้อหาที่สอดคล้องกับเป้าหมายการทำงาน'];
+      const docsMarkup=docs.length?'<div class="course-detail-docs">'+docs.map(doc=>'<a href="'+htmlSafe(doc.href)+'"
+          target="_blank" rel="noopener">'+htmlSafe(doc.label)+' ↗</a>').join('')+'</div>':'<p
+        class="course-detail-missing">ยังไม่มีเอกสารหลักสูตรแนบ กรุณาติดต่อเพื่อสอบถามรายละเอียดและยืนยันเงื่อนไขการอบรม
+      </p>';
+      document.title=title+' | Coach Sam';
+      root.innerHTML='<main class="course-detail-page">
+        <div class="course-detail-wrap">
+          <nav class="course-breadcrumb" aria-label="เส้นทางนำทาง"><a href="./#home">หน้าแรก</a><span
+              aria-hidden="true">/</span><a href="./#courses">หลักสูตรฝึกอบรม</a><span aria-hidden="true">/</span><span
+              aria-current="page">รายละเอียด</span></nav>
+          <article class="course-detail-card">
+            <div class="course-detail-kicker">Course overview</div>
+            <div class="course-detail-heading-row">
+              <h1 class="course-detail-title">'+htmlSafe(title)+'</h1><button class="course-share-button"
+                id="shareCourseButton" type="button" aria-label="แชร์หลักสูตร '+htmlSafe(title)+'">แชร์หลักสูตร</button>
+            </div>
+            <p class="course-share-status" id="courseShareStatus" role="status" aria-live="polite"></p>
+            <div class="course-detail-meta"><span>รหัส '+htmlSafe(code)+'</span><span>'+htmlSafe(level)+'</span></div>
+            <p class="course-detail-intro">บทสรุปย่อจากชื่อและหัวข้อหลักสูตร เพื่อช่วยเลือกหลักสูตรเบื้องต้น
+              รายละเอียดทางการให้ยึดตามเอกสารหรือประกาศของหน่วยงานผู้จัด</p>
+            <section class="course-info-section">
+              <h2>วัตถุประสงค์</h2>
+              <p>'+htmlSafe(profile.objective||'เพื่อเสริมความรู้และทักษะตามหัวข้อหลักสูตร
+                โปรดตรวจสอบวัตถุประสงค์ฉบับเต็มจากเอกสารทางการ')+'</p>
+            </section>
+            <section class="course-info-section">
+              <h2>สิ่งที่คาดว่าจะได้รับจากหลักสูตร</h2>
+              <ul>'+benefits.map(item=>'<li>'+htmlSafe(item)+'</li>').join('')+'</ul>
+            </section>
+            <section class="course-info-section">
+              <h2>คุณสมบัติผู้เข้าร่วมอบรม</h2>
+              <p>'+htmlSafe(profile.eligibility||'คุณสมบัติตามประกาศรับสมัครของหน่วยงานผู้จัด
+                กรุณาติดต่อเพื่อยืนยันก่อนสมัคร')+'</p>
+            </section>
+            <section class="course-info-section">
+              <h2>เอกสารและรายละเอียดหลักสูตร</h2>'+docsMarkup+'
+            </section>
+            <p class="course-detail-note">'+(docs.length?'วัตถุประสงค์และผลลัพธ์ข้างต้นเป็นบทสรุปย่อ ไม่ใช่ถ้อยคำทางการ
+              โปรดอ้างอิงเอกสารหลักสูตรสำหรับรายละเอียดและคุณสมบัติฉบับเต็ม':'ยังไม่มีเอกสารหลักสูตรแนบ
+              ข้อมูลสรุปนี้ใช้ประกอบการพิจารณาเบื้องต้น โปรดติดต่อผู้จัดเพื่อยืนยันรายละเอียดและคุณสมบัติ')+'</p>
+            <div class="course-detail-actions"><button class="btn navy" id="coursePretestButton"
+                type="button">สำรวจก่อนเรียน (Pre-Test)</button><a class="btn back-course"
+                href="./#courses">กลับไปหน้าหลักสูตรอบรม</a></div>
+          </article>
+        </div>
+      </main>';
+      root.querySelector('#coursePretestButton').addEventListener('click',()=>openPretest(data.card));
+      if(location.hash==='#pretest'){setTimeout(()=>openPretest(data.card),50)}
+      root.querySelector('#shareCourseButton').addEventListener('click',async()=>{
+      const status=root.querySelector('#courseShareStatus'),shareData={title:title,text:'หลักสูตรฝึกอบรม Coach
+      Sam',url:location.href};
+      if(navigator.share){try{await
+      navigator.share(shareData);status.textContent='เปิดเมนูแชร์หลักสูตรแล้ว';return}catch(error){if(error&&error.name==='AbortError')return}}
+      try{if(navigator.clipboard&&navigator.clipboard.writeText){await
+      navigator.clipboard.writeText(location.href);status.textContent='คัดลอกลิงก์หลักสูตรแล้ว';return}}catch(error){}
+      const
+      field=document.createElement('textarea');field.value=location.href;field.setAttribute('readonly','');field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();
+      let copied=false;try{copied=document.execCommand('copy')}catch(error){}field.remove();
+      status.textContent=copied?'คัดลอกลิงก์หลักสูตรแล้ว':'คัดลอกลิงก์นี้: '+location.href;
+      });
+      root.focus();
+      }
+      renderCourseDetail();
 
 </script></body></html>
