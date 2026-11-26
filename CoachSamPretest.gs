@@ -16,11 +16,14 @@
 
 const PRETEST_CONFIG = Object.freeze({
   fallbackSpreadsheetId: '1P8KFKRGPi4YklfihtVHX-nXwudjaHEtzpqmOBn8J1-Y',
+  dashboardSheetName: 'Dashboard',
   masterSheetName: 'รวมผลสอบทุกหลักสูตร',
   questionCount: 10,
   consentVersion: '2026-11-18-v1',
   requestIdColumn: 23, // คอลัมน์ W: Submission ID
-  dedupeCacheTtlSeconds: 600 // เก็บ cache กันส่งซ้ำ 10 นาที
+  dedupeCacheTtlSeconds: 600, // เก็บ cache กันส่งซ้ำ 10 นาที
+  notifyOnSubmit: false, // เปลี่ยนเป็น true หากต้องการรับอีเมลแจ้งเตือนทันทีเมื่อมีผู้สอบส่งผล
+  notifyEmail: 'coach.sarm@gmail.com'
 });
 
 const PRETEST_COURSES = Object.freeze([
@@ -95,15 +98,16 @@ const PRETEST_HEADERS = Object.freeze([
   'รุ่นข้อความยินยอม'
 ]);
 
-/** สั่งรันครั้งเดียวเพื่อสร้างแท็บ Master และแท็บทั้ง 21 หลักสูตร */
+/** สั่งรันครั้งเดียวเพื่อสร้างแท็บ Dashboard, แท็บ Master และแท็บทั้ง 21 หลักสูตร */
 function setupPretestSheets() {
   const spreadsheet = getSpreadsheet_();
   getOrCreateMasterSheet_(spreadsheet);
+  setupDashboardSheet_(spreadsheet);
   PRETEST_COURSES.forEach(function (course) {
     const sheet = getOrCreateCourseSheet_(spreadsheet, course);
     formatCourseSheet_(sheet, '#0c1c35');
   });
-  return 'สำเร็จ: เตรียมแท็บหลักและแท็บหลักสูตรเรียบร้อยแล้ว รวม ' + (PRETEST_COURSES.length + 1) + ' แท็บ';
+  return 'สำเร็จ: เตรียมแท็บ Dashboard, Master และแท็บหลักสูตรเรียบร้อยแล้ว รวม ' + (PRETEST_COURSES.length + 2) + ' แท็บ';
 }
 
 /** Health Check: เปิดดูสถานะการเชื่อมต่อผ่าน Web App URL */
@@ -165,6 +169,10 @@ function doPost(e) {
     console.log('กำลังบันทึกข้อมูลหลักสูตร:', course.code, 'ผู้เรียน:', submission.fullName);
     const result = saveSubmission_(submission);
     console.log('บันทึกผลสำเร็จ คะแนน:', submission.score, 'ซ้ำ:', result.duplicate);
+
+    if (!result.duplicate && PRETEST_CONFIG.notifyOnSubmit && PRETEST_CONFIG.notifyEmail) {
+      sendNotificationEmail_(submission);
+    }
 
     const responseData = {
       ok: true,
@@ -336,6 +344,60 @@ function getOrCreateMasterSheet_(spreadsheet) {
     formatCourseSheet_(sheet, '#102a4e');
   }
   return sheet;
+}
+
+/** สร้างแท็บ Dashboard สรุปภาพรวมและคะแนนเฉลี่ยรายวิชาอัตโนมัติ */
+function setupDashboardSheet_(spreadsheet) {
+  let sheet = spreadsheet.getSheetByName(PRETEST_CONFIG.dashboardSheetName);
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet(PRETEST_CONFIG.dashboardSheetName, 0);
+  }
+  sheet.clear();
+  sheet.getRange('A1:E1').merge()
+    .setValue('COACH SAM — Pre-Test Summary Dashboard')
+    .setFontSize(14).setFontWeight('bold').setFontColor('#ffffff').setBackground('#0c1c35')
+    .setVerticalAlignment('middle');
+  sheet.setRowHeight(1, 44);
+
+  const master = "'" + PRETEST_CONFIG.masterSheetName + "'";
+  sheet.getRange('A3:C3').setValues([['จำนวนผู้เข้าสอบทั้งหมด', 'คะแนนเฉลี่ยรวม (เต็ม 10)', 'เปอร์เซ็นต์เฉลี่ยรวม (%)']])
+    .setFontWeight('bold').setBackground('#eef2f7').setFontColor('#0c1c35');
+  sheet.getRange('A4').setFormula('=MAX(0, COUNTA(' + master + '!A2:A))').setNumberFormat('#,##0');
+  sheet.getRange('B4').setFormula('=IFERROR(AVERAGE(' + master + '!J2:J), 0)').setNumberFormat('0.00');
+  sheet.getRange('C4').setFormula('=IFERROR(AVERAGE(' + master + '!L2:L), 0)').setNumberFormat('0.0"%"');
+  sheet.getRange('A4:C4').setFontSize(16).setFontWeight('bold').setFontColor('#99752d');
+
+  sheet.getRange('A6').setValue('สรุปผลแยกตามรายหลักสูตร').setFontWeight('bold').setFontSize(11).setFontColor('#0c1c35');
+  sheet.getRange('A7:E7').setValues([['รหัสหลักสูตร', 'ชื่อหลักสูตร', 'จำนวนผู้เข้าสอบ', 'คะแนนเฉลี่ย', 'เปอร์เซ็นต์เฉลี่ย (%)']])
+    .setFontWeight('bold').setFontColor('#ffffff').setBackground('#142b4c');
+  sheet.getRange('A8').setFormula(
+    '=IFERROR(QUERY(' + master + '!A2:L, "SELECT B, C, COUNT(A), AVG(J), AVG(L) WHERE A IS NOT NULL GROUP BY B, C ORDER BY COUNT(A) DESC LABEL B \'\', C \'\', COUNT(A) \'\', AVG(J) \'\', AVG(L) \'\'", 0), "ยังไม่มีข้อมูลผู้เข้าสอบ")'
+  );
+  sheet.getRange('D8:D100').setNumberFormat('0.00');
+  sheet.getRange('E8:E100').setNumberFormat('0.0');
+  sheet.setColumnWidth(1, 160);
+  sheet.setColumnWidth(2, 420);
+  sheet.setColumnWidths(3, 3, 150);
+  return sheet;
+}
+
+function sendNotificationEmail_(submission) {
+  try {
+    const pct = Math.round(submission.score / PRETEST_CONFIG.questionCount * 100);
+    const subject = '[Pre-Test] ' + submission.course.code + ' - ' + submission.fullName + ' (' + submission.score + '/' + PRETEST_CONFIG.questionCount + ')';
+    const body =
+      'มีผู้ส่งแบบทดสอบก่อนเรียนใหม่\n\n' +
+      'หลักสูตร: ' + submission.course.code + ' ' + submission.course.name + '\n' +
+      'ชื่อ-สกุล: ' + submission.fullName + '\n' +
+      'คะแนน: ' + submission.score + ' / ' + PRETEST_CONFIG.questionCount + ' (' + pct + '%)\n' +
+      'จังหวัด: ' + submission.province + '\n' +
+      'เบอร์โทร: ' + submission.phone + '\n' +
+      'LINE ID: ' + submission.lineId + '\n' +
+      'อีเมล: ' + submission.email + '\n';
+    MailApp.sendEmail(PRETEST_CONFIG.notifyEmail, subject, body);
+  } catch (err) {
+    console.warn('ส่งอีเมลแจ้งเตือนไม่สำเร็จ (ไม่กระทบการบันทึกชีต):', err);
+  }
 }
 
 function getOrCreateCourseSheet_(spreadsheet, course) {
