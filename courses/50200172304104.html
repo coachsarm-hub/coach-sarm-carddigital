@@ -107,7 +107,7 @@ a{color:inherit}
    <section class="course-info-section"><h2>เอกสารและรายละเอียดหลักสูตร</h2><div class="course-detail-docs"><a href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/44%20%C2%A1%C3%D0%B4%D1%BA%20%A1%D2%C3%B7%D3%B8%D8%C3%A1%D4%A8%BC%E8%D2%B9%E0%A4%C3%D7%CD%A2%E8%D2%C2%CD%CD%B9%E4%C5%B9%EC%2030%20%AA%C1.50200172304104.pdf" target="_blank" rel="noopener">เอกสารหลักสูตร ↗</a></div></section>
    <p class="course-detail-note">วัตถุประสงค์และผลลัพธ์ข้างต้นเป็นบทสรุปย่อ ไม่ใช่ถ้อยคำทางการ โปรดอ้างอิงเอกสารหลักสูตรสำหรับรายละเอียดและคุณสมบัติฉบับเต็ม</p>
    <div class="course-detail-actions">
-    <a class="btn navy" href="../index.html?course=50200172304104#pretest">สำรวจก่อนเรียน (Pre-Test)</a>
+    <button class="btn navy" type="button" data-open-pretest data-course-code="50200172304104" data-course-title="การทำธุรกิจผ่านเครือข่ายออนไลน์">สำรวจก่อนเรียน (Pre-Test)</button>
     <a class="btn back-course" href="../index.html#courses">กลับไปหน้าหลักสูตรอบรม</a>
    </div>
   </article>
@@ -125,5 +125,6 @@ document.getElementById('shareCourseButton').addEventListener('click',async()=>{
  status.textContent=ok?'คัดลอกลิงก์หลักสูตรแล้ว':'คัดลอกลิงก์นี้: '+location.href;
 });
 </script>
+<script src="../pretest.js?v=35" defer></script>
 </body>
 </html>

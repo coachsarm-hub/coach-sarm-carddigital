@@ -107,7 +107,7 @@ a{color:inherit}
    <section class="course-info-section"><h2>เอกสารและรายละเอียดหลักสูตร</h2><p class="course-detail-missing">ยังไม่มีเอกสารหลักสูตรแนบ กรุณาติดต่อเพื่อสอบถามรายละเอียดและยืนยันเงื่อนไขการอบรม</p></section>
    <p class="course-detail-note">ยังไม่มีเอกสารหลักสูตรแนบ ข้อมูลสรุปนี้ใช้ประกอบการพิจารณาเบื้องต้น โปรดติดต่อผู้จัดเพื่อยืนยันรายละเอียดและคุณสมบัติ</p>
    <div class="course-detail-actions">
-    <a class="btn navy" href="../index.html?course=10120014220103#pretest">สำรวจก่อนเรียน (Pre-Test)</a>
+    <button class="btn navy" type="button" data-open-pretest data-course-code="10120014220103" data-course-title="การพัฒนาโปรแกรม Web Application ด้วย React">สำรวจก่อนเรียน (Pre-Test)</button>
     <a class="btn back-course" href="../index.html#courses">กลับไปหน้าหลักสูตรอบรม</a>
    </div>
   </article>
@@ -125,5 +125,6 @@ document.getElementById('shareCourseButton').addEventListener('click',async()=>{
  status.textContent=ok?'คัดลอกลิงก์หลักสูตรแล้ว':'คัดลอกลิงก์นี้: '+location.href;
 });
 </script>
+<script src="../pretest.js?v=35" defer></script>
 </body>
 </html>

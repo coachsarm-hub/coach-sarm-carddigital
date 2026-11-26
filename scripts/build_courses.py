@@ -223,7 +223,7 @@ a{{color:inherit}}
    <section class="course-info-section"><h2>เอกสารและรายละเอียดหลักสูตร</h2>{docs_html}</section>
    <p class="course-detail-note">{note_text}</p>
    <div class="course-detail-actions">
-    <a class="btn navy" href="../index.html?course={code}#pretest">สำรวจก่อนเรียน (Pre-Test)</a>
+    <button class="btn navy" type="button" data-open-pretest data-course-code="{code}" data-course-title="{esc_title}">สำรวจก่อนเรียน (Pre-Test)</button>
     <a class="btn back-course" href="../index.html#courses">กลับไปหน้าหลักสูตรอบรม</a>
    </div>
   </article>
@@ -241,6 +241,7 @@ document.getElementById('shareCourseButton').addEventListener('click',async()=>{
  status.textContent=ok?'คัดลอกลิงก์หลักสูตรแล้ว':'คัดลอกลิงก์นี้: '+location.href;
 }});
 </script>
+<script src="../pretest.js?v=35" defer></script>
 </body>
 </html>
 """

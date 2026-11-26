@@ -107,7 +107,7 @@ a{color:inherit}
    <section class="course-info-section"><h2>เอกสารและรายละเอียดหลักสูตร</h2><div class="course-detail-docs"><a href="https://gcloud.dsd.go.th/~dgt/course01/12.pdf" target="_blank" rel="noopener">เอกสารหลักสูตร ↗</a></div></section>
    <p class="course-detail-note">วัตถุประสงค์และผลลัพธ์ข้างต้นเป็นบทสรุปย่อ ไม่ใช่ถ้อยคำทางการ โปรดอ้างอิงเอกสารหลักสูตรสำหรับรายละเอียดและคุณสมบัติฉบับเต็ม</p>
    <div class="course-detail-actions">
-    <a class="btn navy" href="../index.html?course=0920224190208#pretest">สำรวจก่อนเรียน (Pre-Test)</a>
+    <button class="btn navy" type="button" data-open-pretest data-course-code="0920224190208" data-course-title="การเขียนโปรแกรมประมวลผลภาพและเทคโนโลยีปัญญาประดิษฐ์">สำรวจก่อนเรียน (Pre-Test)</button>
     <a class="btn back-course" href="../index.html#courses">กลับไปหน้าหลักสูตรอบรม</a>
    </div>
   </article>
@@ -125,5 +125,6 @@ document.getElementById('shareCourseButton').addEventListener('click',async()=>{
  status.textContent=ok?'คัดลอกลิงก์หลักสูตรแล้ว':'คัดลอกลิงก์นี้: '+location.href;
 });
 </script>
+<script src="../pretest.js?v=35" defer></script>
 </body>
 </html>

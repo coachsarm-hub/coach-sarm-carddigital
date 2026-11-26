@@ -107,7 +107,7 @@ a{color:inherit}
    <section class="course-info-section"><h2>เอกสารและรายละเอียดหลักสูตร</h2><div class="course-detail-docs"><a href="https://eit2.dsd.go.th/~qrcode/qr1/%E0%CD%A1%CA%D2%C3%CB%C5%D1%A1%CA%D9%B5%C3%A1%D2%C3%BD%D6%A1%CD%BA%C3%C1%BD%D5%C1%D7%CD%E1%C3%A7%A7%A7%D2%B9%20%B5%D2%C1%A1%C5%D8%E8%C1%E0%B7%A4%E2%B9%E2%C5%C2%D5/%2006%20%E0%B7%A4%E2%B9%E2%C5%C2%D5%B4%D4%A8%D4%B7%D1%C5%20%28DT%29/120%20%C2%A1%C3%D0%B4%D1%BA%20%CB%C5%D1%A1%CA%D9%B5%C3%20%A1%D2%C3%BB%C3%D0%C2%D8%A1%B5%EC%E3%AA%E9%20AI%20%E0%BE%D7%E8%CD%E0%BE%D4%E8%C1%BB%C3%D0%CA%D4%B7%B8%D4%C0%D2%BE%A7%D2%B9%2030%20%AA%C1.%2010120014220610.pdf" target="_blank" rel="noopener">เอกสารหลักสูตร ↗</a></div></section>
    <p class="course-detail-note">วัตถุประสงค์และผลลัพธ์ข้างต้นเป็นบทสรุปย่อ ไม่ใช่ถ้อยคำทางการ โปรดอ้างอิงเอกสารหลักสูตรสำหรับรายละเอียดและคุณสมบัติฉบับเต็ม</p>
    <div class="course-detail-actions">
-    <a class="btn navy" href="../index.html?course=10120014220610#pretest">สำรวจก่อนเรียน (Pre-Test)</a>
+    <button class="btn navy" type="button" data-open-pretest data-course-code="10120014220610" data-course-title="การประยุกต์ใช้ AI เพื่อเพิ่มประสิทธิภาพงานเอกสารและการสื่อสาร">สำรวจก่อนเรียน (Pre-Test)</button>
     <a class="btn back-course" href="../index.html#courses">กลับไปหน้าหลักสูตรอบรม</a>
    </div>
   </article>
@@ -125,5 +125,6 @@ document.getElementById('shareCourseButton').addEventListener('click',async()=>{
  status.textContent=ok?'คัดลอกลิงก์หลักสูตรแล้ว':'คัดลอกลิงก์นี้: '+location.href;
 });
 </script>
+<script src="../pretest.js?v=35" defer></script>
 </body>
 </html>
