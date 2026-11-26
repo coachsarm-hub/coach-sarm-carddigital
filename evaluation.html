@@ -67,7 +67,8 @@ h1{font:500 clamp(1.55rem,3.6vw,2.15rem)/1.28 Georgia,'Times New Roman',serif;co
 .sbtn.line{background:#06c755;color:#fff;border-color:#06c755}
 .footer{background:#081426;color:#aab6c5;padding:1.3rem 0;font-size:.78rem}
 .footer .wrap{display:flex;justify-content:space-between;gap:1rem}
-@media(max-width:600px){.topbar span:first-child{display:none}.star-btn small{display:none}.footer .wrap{display:block;text-align:center}}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+@media(max-width:600px){.topbar span:first-child{display:none}.grid-3{grid-template-columns:1fr}.star-btn small{display:none}.footer .wrap{display:block;text-align:center}}
 </style>
 </head>
 <body>
@@ -107,9 +108,37 @@ h1{font:500 clamp(1.55rem,3.6vw,2.15rem)/1.28 Georgia,'Times New Roman',serif;co
           <label for="comment">สิ่งที่ประทับใจ หรือข้อเสนอแนะเพื่อการพัฒนา</label>
           <textarea id="comment" rows="3" maxlength="500" placeholder="พิมพ์ข้อเสนอแนะเพิ่มเติมได้ที่นี่ (เว้นว่างได้)"></textarea>
         </div>
-        <div class="field">
-          <label for="reviewer">ชื่อผู้ประเมิน (ไม่บังคับ)</label>
-          <input id="reviewer" type="text" maxlength="120" placeholder="เว้นว่างได้ (บันทึกเป็นไม่ประสงค์ออกนาม)">
+        <div class="grid-3">
+          <div class="field">
+            <label for="evalGender">เพศ (ไม่บังคับ)</label>
+            <select id="evalGender">
+              <option value="ไม่ระบุ">ไม่ระบุ</option>
+              <option value="ชาย">ชาย</option>
+              <option value="หญิง">หญิง</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="evalAge">ช่วงอายุ (ไม่บังคับ)</label>
+            <select id="evalAge">
+              <option value="ไม่ระบุ">ไม่ระบุ</option>
+              <option value="ต่ำกว่า 20 ปี">ต่ำกว่า 20 ปี</option>
+              <option value="20–30 ปี">20–30 ปี</option>
+              <option value="31–40 ปี">31–40 ปี</option>
+              <option value="41–50 ปี">41–50 ปี</option>
+              <option value="มากกว่า 50 ปี">มากกว่า 50 ปี</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="evalEducation">ระดับการศึกษา (ไม่บังคับ)</label>
+            <select id="evalEducation">
+              <option value="ไม่ระบุ">ไม่ระบุ</option>
+              <option value="มัธยมศึกษา / ปวช.">มัธยมศึกษา / ปวช.</option>
+              <option value="ปวส. / อนุปริญญา">ปวส. / อนุปริญญา</option>
+              <option value="ปริญญาตรี">ปริญญาตรี</option>
+              <option value="ปริญญาโท">ปริญญาโท</option>
+              <option value="ปริญญาเอก / อื่นๆ">ปริญญาเอก / อื่นๆ</option>
+            </select>
+          </div>
         </div>
 
         <button class="submit-btn" id="submitBtn" type="submit">ส่งแบบประเมิน</button>
@@ -269,7 +298,14 @@ document.getElementById('evalForm').addEventListener('submit', async event => {
     applyScore: scores.applyScore,
     overallScore: scores.overallScore,
     comment: document.getElementById('comment').value.trim(),
-    reviewer: document.getElementById('reviewer').value.trim()
+    gender: document.getElementById('evalGender').value,
+    ageRange: document.getElementById('evalAge').value,
+    education: document.getElementById('evalEducation').value,
+    reviewer: [
+      'เพศ: ' + document.getElementById('evalGender').value,
+      'อายุ: ' + document.getElementById('evalAge').value,
+      'วุฒิ: ' + document.getElementById('evalEducation').value
+    ].join(' | ')
   };
 
   submitBtn.disabled = true;
