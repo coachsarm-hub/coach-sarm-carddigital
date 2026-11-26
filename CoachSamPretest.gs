@@ -1,25 +1,26 @@
 /**
- * Coach Sam Pre-Test response receiver for Google Sheets.
- *
- * Install as a bound Apps Script project from the target spreadsheet:
- * Extensions > Apps Script. Then run setupPretestSheets() once and deploy
- * this project as a Web app (execute as the owner, access: anyone).
- *
- * The static site should POST an x-www-form-urlencoded field named "payload"
- * to the deployed /exec URL, targeting a hidden iframe. The response iframe
- * posts a small success/failure message to the fixed GitHub Pages origin.
- * No student data is returned in the response message.
+ * ============================================================================
+ * COACH SAM — Pre-Test Response Receiver for Google Sheets (Version 2.0)
+ * ============================================================================
+ * 
+ * ระบบรับผลแบบทดสอบก่อนเรียน (Pre-Test) ทั้ง 21 หลักสูตร และบันทึกแยกแท็บอัตโนมัติ
+ * - ป้องกัน CORS ด้วยวิธี Form Post Handshake ผ่าน Hidden Iframe + postMessage
+ * - ตรวจเฉลยและคำนวณคะแนนบน Server-side เพื่อความถูกต้องและปลอดภัย
+ * - บันทึกคำตอบเป็นตัวอักษรตัวเลือก (A, B, C, D) ให้อ่านง่ายในสเปรดชีต
+ * - ป้องกัน Race Condition ด้วย LockService และป้องกัน Formula Injection
  */
 
 const PRETEST_CONFIG = Object.freeze({
+  // Google Sheet ID ปลายทาง (หากติดตั้งแบบ Extensions > Apps Script สามารถใช้ค่าเดิมหรือดึงชีตปัจจุบันอัตโนมัติ)
   spreadsheetId: '1P8KFKRGPi4YklfihtVHX-nXwudjaHEtzpqmOBn8J1-Y',
+  // โดเมนของหน้าเว็บที่ได้รับอนุญาตให้รับข้อความ postMessage
   parentOrigin: 'https://coachsarm-hub.github.io',
   questionCount: 10,
   consentVersion: '2026-11-18-v1',
-  requestIdColumn: 23
+  requestIdColumn: 23 // คอลัมน์ W: Submission ID สำหรับตรวจสอบรายการซ้ำ
 });
 
-// Sheet tabs use course codes so they remain short, unique, and easy to match.
+// รายการหลักสูตรทั้ง 21 รายการ (แยกชีตตามรหัสหลักสูตรเพื่อความกระชับและไม่ซ้ำกัน)
 const PRETEST_COURSES = Object.freeze([
   { code: '0920014220601', name: 'การบริหารโครงการพัฒนาซอฟต์แวร์', group: 'ระดับสูง' },
   { code: '10120014220115', name: 'AI Assisted Coding Fundamentals พัฒนานวัตกรรมดิจิทัล', group: 'ระดับสูง' },
@@ -44,7 +45,7 @@ const PRETEST_COURSES = Object.freeze([
   { code: '10120014220504', name: 'กฎหมายดิจิทัลสำหรับผู้ใช้งานทั่วไป', group: 'สถานประกอบกิจการ' }
 ]);
 
-
+// แมปหลักสูตรเข้ากับชุดข้อสอบ 16 กลุ่มวิชา
 const PRETEST_COURSE_GROUP = Object.freeze({
   '0920014220601': 'project', '10120014220115': 'aiCoding', '0920224190208': 'vision',
   '0920084220103': 'web', '0920084220104': 'web', '0920084220105': 'web',
@@ -54,12 +55,12 @@ const PRETEST_COURSE_GROUP = Object.freeze({
   '0920014220405': 'analytics', '2220017320213': 'tourismAI', '0920224220116': 'google',
   '0920014220406': 'microsoftAI', '10120014220801': 'genAI', '10120014220504': 'law'
 });
+
 /**
- * Answer keys by course group.
- * In the question bank, option index 0 (Choice A) is authored as the correct answer.
- * When rendered in index.html, choices are shuffled dynamically for display,
- * but each radio button retains its originalIndex (0..3).
- * Thus, originalIndex 0 corresponds to the correct answer.
+ * เฉลยคำตอบตามกลุ่มวิชา:
+ * ในคลังข้อสอบ ตัวเลือกแรก (Index 0) คือคำตอบที่ถูกต้อง
+ * เมื่อแสดงผลหน้าเว็บ จะสุ่มสลับตัวเลือก (Fisher-Yates) แต่คงค่า originalIndex (0..3) ไว้
+ * ดังนั้นคำตอบที่ถูกต้องตาม originalIndex คือ 0 เสมอ
  */
 const PRETEST_ANSWER_KEYS = Object.freeze({
   project: Object.freeze([0,0,0,0,0,0,0,0,0,0]),
@@ -99,49 +100,56 @@ const PRETEST_HEADERS = Object.freeze([
   'รุ่นข้อความยินยอม'
 ]);
 
-/** Creates missing per-course tabs and formats their header rows. Safe to rerun. */
+/**
+ * ฟังก์ชันเตรียมชีต: สั่งรันครั้งแรกเพียงครั้งเดียวเพื่อสร้างและจัดรูปแบบแท็บทั้ง 21 หลักสูตร
+ */
 function setupPretestSheets() {
-  const spreadsheet = SpreadsheetApp.openById(PRETEST_CONFIG.spreadsheetId);
+  const spreadsheet = getSpreadsheet_();
   PRETEST_COURSES.forEach(function (course) {
     const sheet = getOrCreateCourseSheet_(spreadsheet, course);
     formatCourseSheet_(sheet);
   });
-  return 'Ready: ' + PRETEST_COURSES.length + ' course tabs.';
+  return 'สำเร็จ: เตรียมแท็บหลักสูตรเรียบร้อยแล้ว ' + PRETEST_COURSES.length + ' แท็บ';
 }
 
-/** Lightweight deployment check; does not create or change any sheet. */
+/**
+ * Health Check: สำหรับเปิดดูสถานะการเชื่อมต่อผ่าน Web App URL ตรงๆ
+ */
 function doGet() {
   try {
-    const spreadsheet = SpreadsheetApp.openById(PRETEST_CONFIG.spreadsheetId);
+    const spreadsheet = getSpreadsheet_();
     const existingNames = spreadsheet.getSheets().map(function (sheet) { return sheet.getName(); });
     const missingCourses = PRETEST_COURSES.filter(function (course) {
       return existingNames.indexOf(course.code) === -1;
     }).map(function (course) { return course.code; });
+
     return ContentService
       .createTextOutput(JSON.stringify({
         ok: missingCourses.length === 0,
-        service: 'Coach Sam Pre-Test receiver',
+        service: 'Coach Sam Pre-Test Receiver v2.0',
         sheetConnected: true,
+        sheetTitle: spreadsheet.getName(),
         courseCount: PRETEST_COURSES.length,
-        courseSheetCount: PRETEST_COURSES.length - missingCourses.length,
-        questionCount: PRETEST_CONFIG.questionCount,
+        readySheetCount: PRETEST_COURSES.length - missingCourses.length,
         missingCourseSheets: missingCourses
-      }))
+      }, null, 2))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
     console.error(error && error.stack ? error.stack : error);
     return ContentService
       .createTextOutput(JSON.stringify({
         ok: false,
-        service: 'Coach Sam Pre-Test receiver',
+        service: 'Coach Sam Pre-Test Receiver v2.0',
         sheetConnected: false,
-        message: 'ไม่สามารถเชื่อมต่อ Google Sheets ได้'
+        message: 'ไม่สามารถเปิด Google Sheet ได้ กรุณาตรวจสอบสิทธิ์หรือ ID: ' + error.message
       }))
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
 
-/** Receives one completed test and appends it to the matching course tab. */
+/**
+ * Endpoint รับข้อมูลการส่งข้อสอบและบันทึกลงในชีต
+ */
 function doPost(e) {
   let requestId = '';
   try {
@@ -166,21 +174,32 @@ function doPost(e) {
     return postMessageResponse_({
       ok: false,
       requestId: requestId,
-      message: 'บันทึกผลไม่สำเร็จ กรุณาตรวจข้อมูลแล้วลองส่งอีกครั้ง'
+      message: 'บันทึกผลไม่สำเร็จ: ' + (error.message || 'กรุณาตรวจข้อมูลแล้วลองใหม่อีกครั้ง')
     });
   }
+}
+
+function getSpreadsheet_() {
+  if (PRETEST_CONFIG.spreadsheetId) {
+    try {
+      return SpreadsheetApp.openById(PRETEST_CONFIG.spreadsheetId);
+    } catch (err) {
+      // หาก openById ติดสิทธิ์ ให้ลองดึง Active Spreadsheet
+    }
+  }
+  return SpreadsheetApp.getActiveSpreadsheet();
 }
 
 function findCourse_(courseCode) {
   const code = String(courseCode || '').trim();
   const course = PRETEST_COURSES.find(function (item) { return item.code === code; });
-  if (!course) throw new Error('Unknown course code');
+  if (!course) throw new Error('ไม่พบรหัสหลักสูตร ' + code);
   return course;
 }
 
 function validateRequestId_(value) {
   const id = String(value || '').trim();
-  if (!/^[A-Za-z0-9_-]{12,80}$/.test(id)) throw new Error('Invalid submission ID');
+  if (!/^[A-Za-z0-9_-]{12,80}$/.test(id)) throw new Error('Submission ID ไม่ถูกต้อง');
   return id;
 }
 
@@ -192,26 +211,28 @@ function normalizeSubmission_(payload, course) {
   const province = cleanText_(payload.province, 80);
 
   if (fullName.length < 2 || !/[\u0E00-\u0E7F]/.test(fullName)) {
-    throw new Error('Invalid Thai full name');
+    throw new Error('กรุณาระบุชื่อ-นามสกุลภาษาไทยให้ถูกต้อง');
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('Invalid email');
-  if (!lineId || !phone || !province) throw new Error('Missing contact fields');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('รูปแบบอีเมลไม่ถูกต้อง');
+  if (!lineId || !phone || !province) throw new Error('กรุณากรอกข้อมูลติดต่อให้ครบถ้วน');
   const phoneDigits = phone.replace(/\D/g, '');
-  if (phoneDigits.length < 9 || phoneDigits.length > 15) throw new Error('Invalid phone');
-  if (payload.consent !== true) throw new Error('Consent is required');
+  if (phoneDigits.length < 9 || phoneDigits.length > 15) throw new Error('เบอร์โทรศัพท์ไม่ถูกต้อง');
+  if (payload.consent !== true) throw new Error('กรุณากดยินยอมการใช้ข้อมูลเพื่อประเมินผล');
 
   const answers = payload.answers;
   if (!Array.isArray(answers) || answers.length !== PRETEST_CONFIG.questionCount) {
-    throw new Error('Expected exactly 10 answers');
+    throw new Error('ต้องส่งคำตอบครบ 10 ข้อ');
   }
   const normalizedAnswers = answers.map(function (answer) {
     const value = Number(answer);
-    if (!Number.isInteger(value) || value < 0 || value > 3) throw new Error('Invalid answer value');
+    if (!Number.isInteger(value) || value < 0 || value > 3) throw new Error('ค่าคำตอบไม่ถูกต้อง');
     return value;
   });
+
+  // ตรวจคะแนนบน Server
   const group = PRETEST_COURSE_GROUP[course.code];
   const answerKey = PRETEST_ANSWER_KEYS[group];
-  if (!answerKey || answerKey.length !== PRETEST_CONFIG.questionCount) throw new Error('Answer key is missing');
+  if (!answerKey || answerKey.length !== PRETEST_CONFIG.questionCount) throw new Error('ไม่พบคีย์เฉลยคำตอบ');
   const score = normalizedAnswers.reduce(function (total, answer, index) {
     return total + (answer === answerKey[index] ? 1 : 0);
   }, 0);
@@ -232,12 +253,13 @@ function normalizeSubmission_(payload, course) {
 
 function saveSubmission_(submission) {
   const lock = LockService.getScriptLock();
-  lock.waitLock(20000);
+  lock.waitLock(20000); // รอคิวได้สูงสุด 20 วินาที ป้องกันข้อมูลชนกัน
   try {
-    const spreadsheet = SpreadsheetApp.openById(PRETEST_CONFIG.spreadsheetId);
+    const spreadsheet = getSpreadsheet_();
     const sheet = getOrCreateCourseSheet_(spreadsheet, submission.course);
     const lastRow = sheet.getLastRow();
 
+    // ตรวจสอบ Submission ID ซ้ำ
     if (lastRow > 1) {
       const idRange = sheet.getRange(2, PRETEST_CONFIG.requestIdColumn, lastRow - 1, 1);
       const existing = idRange.createTextFinder(submission.requestId)
@@ -246,6 +268,7 @@ function saveSubmission_(submission) {
       if (existing) return { duplicate: true };
     }
 
+    const answerLabels = ['A', 'B', 'C', 'D'];
     const row = [
       new Date(),
       submission.course.code,
@@ -259,7 +282,7 @@ function saveSubmission_(submission) {
       submission.score,
       PRETEST_CONFIG.questionCount,
       Math.round(submission.score / PRETEST_CONFIG.questionCount * 100),
-      ...submission.answers.map(function(ans) { return ['A', 'B', 'C', 'D'][ans] || sheetSafeText_(ans); }),
+      ...submission.answers.map(function(ans) { return answerLabels[ans] || sheetSafeText_(ans); }),
       submission.requestId,
       PRETEST_CONFIG.consentVersion
     ];
@@ -292,7 +315,7 @@ function formatCourseSheet_(sheet) {
     .setBackground('#0c1c35')
     .setWrap(true);
   sheet.setFrozenRows(1);
-  sheet.setRowHeight(1, 42);
+  sheet.setRowHeight(1, 40);
   sheet.getRange('A:A').setNumberFormat('yyyy-mm-dd hh:mm:ss');
   sheet.getRange('J:L').setNumberFormat('0');
   sheet.getRange('A:X').setVerticalAlignment('middle');
@@ -307,13 +330,11 @@ function cleanText_(value, maxLength) {
     .slice(0, maxLength);
 }
 
-// Prevent user-submitted strings from being interpreted as Sheets formulas.
 function sheetSafeText_(value) {
   const text = String(value == null ? '' : value);
   return /^[=+@\-]/.test(text) ? "'" + text : text;
 }
 
-/** Returns a minimal HTML response that notifies the parent site. */
 function postMessageResponse_(message) {
   const messageJson = JSON.stringify(message).replace(/</g, '\\u003c');
   const originJson = JSON.stringify(PRETEST_CONFIG.parentOrigin);
