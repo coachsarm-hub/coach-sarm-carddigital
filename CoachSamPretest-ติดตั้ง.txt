@@ -4,7 +4,7 @@ Coach Sam Pre-Test → Google Sheets
 https://docs.google.com/spreadsheets/d/1P8KFKRGPi4YklfihtVHX-nXwudjaHEtzpqmOBn8J1-Y/edit
 
 Web App ที่เชื่อมกับหน้าเว็บปัจจุบัน (Active Endpoint)
-https://script.google.com/macros/s/AKfycbymceluMh7pYcpTVWnL-goRZ6iTNpbe9yxIRo5WNcJi6skWJA0SwKginB5C8Vc93fQE/exec
+https://script.google.com/macros/s/AKfycbyvMaG-azDpYqQqua-F7myoJIYj5TIrnE6g5Ytky_x5kuvYno9x-Sqm1PHWYWMPmG90/exec
 (หากมีการ Deploy ใหม่ สามารถนำ URL ใหม่มาแทนที่ได้ทั้งในไฟล์นี้และที่ตัวแปร PRETEST_ENDPOINT ใน index.html)
 
 สิ่งที่หน้าเว็บทำ
