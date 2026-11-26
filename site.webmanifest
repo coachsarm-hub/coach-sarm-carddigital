@@ -1,0 +1,21 @@
+{
+  "name": "Coach Sam | วิทยากรและที่ปรึกษาด้านเทคโนโลยีดิจิทัล",
+  "short_name": "Coach Sam",
+  "description": "นามบัตรดิจิทัลและพอร์ทัลหลักสูตรอบรมด้าน AI และเทคโนโลยีดิจิทัล นายสุทธิพจน์ ศรีแสนยงค์ (Coach Sam)",
+  "icons": [
+    {
+      "src": "images/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./",
+  "display": "standalone",
+  "theme_color": "#0c1c35",
+  "background_color": "#0c1c35"
+}
