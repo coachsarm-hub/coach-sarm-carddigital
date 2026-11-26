@@ -1,26 +1,32 @@
 /**
  * ============================================================================
- * COACH SAM — Pre-Test Response Receiver for Google Sheets (Version 2.0)
+ * COACH SAM — Pre-Test Response Receiver for Google Sheets (Version 2.5)
  * ============================================================================
  * 
- * ระบบรับผลแบบทดสอบก่อนเรียน (Pre-Test) ทั้ง 21 หลักสูตร และบันทึกแยกแท็บอัตโนมัติ
- * - ป้องกัน CORS ด้วยวิธี Form Post Handshake ผ่าน Hidden Iframe + postMessage
- * - ตรวจเฉลยและคำนวณคะแนนบน Server-side เพื่อความถูกต้องและปลอดภัย
- * - บันทึกคำตอบเป็นตัวอักษรตัวเลือก (A, B, C, D) ให้อ่านง่ายในสเปรดชีต
- * - ป้องกัน Race Condition ด้วย LockService และป้องกัน Formula Injection
+ * ระบบรับผลแบบทดสอบก่อนเรียน (Pre-Test) ทั้ง 21 หลักสูตร และบันทึกผลอัตโนมัติ
+ * 
+ * ความสามารถของเวอร์ชัน 2.5:
+ * 1. บันทึก 2 ระดับ:
+ *    - แท็บหลักที่ 1: "รวมผลสอบทุกหลักสูตร" (Master Log รวมทุกวิชาแบบ Real-time ในที่เดียว)
+ *    - แท็บย่อยรายวิชา: แยกตามรหัสหลักสูตร 21 แท็บ
+ * 2. Auto-Detect Spreadsheet: ตรวจจับชีตที่สคริปต์นี้ผูกอยู่โดยอัตโนมัติ (getActiveSpreadsheet)
+ *    ไม่ต้องกังวลเรื่อง Spreadsheet ID ผิด
+ * 3. รองรับชื่อทั้งภาษาไทยและภาษาอังกฤษ (Suttiphod Sriseanyong, ฯลฯ)
+ * 4. รองรับการรับข้อมูลแบบทนทาน (ทนทานต่อทั้ง Form URL-encoded และ PostData contents)
+ * 5. ส่งผลคะแนนกลับผ่าน postMessage แบบ Universal Cross-Origin ("*")
+ * 6. ตรวจเฉลยบน Server-side และแปลงคำตอบเป็นตัวอักษร A, B, C, D ชัดเจน
  */
 
 const PRETEST_CONFIG = Object.freeze({
-  // Google Sheet ID ปลายทาง (หากติดตั้งแบบ Extensions > Apps Script สามารถใช้ค่าเดิมหรือดึงชีตปัจจุบันอัตโนมัติ)
-  spreadsheetId: '1P8KFKRGPi4YklfihtVHX-nXwudjaHEtzpqmOBn8J1-Y',
-  // โดเมนของหน้าเว็บที่ได้รับอนุญาตให้รับข้อความ postMessage
-  parentOrigin: 'https://coachsarm-hub.github.io',
+  // Fallback ID (ใช้เมื่อรันแยกเดี่ยว ไม่ได้ติดตั้งผ่าน Extensions > Apps Script)
+  fallbackSpreadsheetId: '1P8KFKRGPi4YklfihtVHX-nXwudjaHEtzpqmOBn8J1-Y',
+  masterSheetName: 'รวมผลสอบทุกหลักสูตร',
   questionCount: 10,
   consentVersion: '2026-11-18-v1',
   requestIdColumn: 23 // คอลัมน์ W: Submission ID สำหรับตรวจสอบรายการซ้ำ
 });
 
-// รายการหลักสูตรทั้ง 21 รายการ (แยกชีตตามรหัสหลักสูตรเพื่อความกระชับและไม่ซ้ำกัน)
+// รายการหลักสูตรทั้ง 21 รายการ
 const PRETEST_COURSES = Object.freeze([
   { code: '0920014220601', name: 'การบริหารโครงการพัฒนาซอฟต์แวร์', group: 'ระดับสูง' },
   { code: '10120014220115', name: 'AI Assisted Coding Fundamentals พัฒนานวัตกรรมดิจิทัล', group: 'ระดับสูง' },
@@ -56,12 +62,7 @@ const PRETEST_COURSE_GROUP = Object.freeze({
   '0920014220406': 'microsoftAI', '10120014220801': 'genAI', '10120014220504': 'law'
 });
 
-/**
- * เฉลยคำตอบตามกลุ่มวิชา:
- * ในคลังข้อสอบ ตัวเลือกแรก (Index 0) คือคำตอบที่ถูกต้อง
- * เมื่อแสดงผลหน้าเว็บ จะสุ่มสลับตัวเลือก (Fisher-Yates) แต่คงค่า originalIndex (0..3) ไว้
- * ดังนั้นคำตอบที่ถูกต้องตาม originalIndex คือ 0 เสมอ
- */
+// เฉลยข้อสอบ (Original index 0 คือคำตอบที่ถูกเสมอ)
 const PRETEST_ANSWER_KEYS = Object.freeze({
   project: Object.freeze([0,0,0,0,0,0,0,0,0,0]),
   aiCoding: Object.freeze([0,0,0,0,0,0,0,0,0,0]),
@@ -85,12 +86,12 @@ const PRETEST_HEADERS = Object.freeze([
   'วันเวลาส่ง',
   'รหัสหลักสูตร',
   'ชื่อหลักสูตร',
-  'ชื่อ-สกุล (ภาษาไทย)',
+  'ชื่อ-สกุล',
   'อีเมล',
   'Line ID',
   'เบอร์โทร',
   'จังหวัดที่อยู่',
-  'ยินยอมให้ใช้ข้อมูลเพื่อประเมินผล',
+  'ยินยอม',
   'คะแนน',
   'คะแนนเต็ม',
   'เปอร์เซ็นต์',
@@ -101,15 +102,16 @@ const PRETEST_HEADERS = Object.freeze([
 ]);
 
 /**
- * ฟังก์ชันเตรียมชีต: สั่งรันครั้งแรกเพียงครั้งเดียวเพื่อสร้างและจัดรูปแบบแท็บทั้ง 21 หลักสูตร
+ * ฟังก์ชันเตรียมชีต: สั่งรันครั้งเดียวเพื่อสร้างแท็บ Master และแท็บทั้ง 21 หลักสูตร
  */
 function setupPretestSheets() {
   const spreadsheet = getSpreadsheet_();
+  getOrCreateMasterSheet_(spreadsheet);
   PRETEST_COURSES.forEach(function (course) {
     const sheet = getOrCreateCourseSheet_(spreadsheet, course);
-    formatCourseSheet_(sheet);
+    formatCourseSheet_(sheet, '#0c1c35');
   });
-  return 'สำเร็จ: เตรียมแท็บหลักสูตรเรียบร้อยแล้ว ' + PRETEST_COURSES.length + ' แท็บ';
+  return 'สำเร็จ: เตรียมแท็บหลักและแท็บหลักสูตรเรียบร้อยแล้ว รวม ' + (PRETEST_COURSES.length + 1) + ' แท็บ';
 }
 
 /**
@@ -125,10 +127,12 @@ function doGet() {
 
     return ContentService
       .createTextOutput(JSON.stringify({
-        ok: missingCourses.length === 0,
-        service: 'Coach Sam Pre-Test Receiver v2.0',
+        ok: true,
+        service: 'Coach Sam Pre-Test Receiver v2.5',
         sheetConnected: true,
         sheetTitle: spreadsheet.getName(),
+        sheetId: spreadsheet.getId(),
+        hasMasterSheet: existingNames.indexOf(PRETEST_CONFIG.masterSheetName) !== -1,
         courseCount: PRETEST_COURSES.length,
         readySheetCount: PRETEST_COURSES.length - missingCourses.length,
         missingCourseSheets: missingCourses
@@ -139,9 +143,9 @@ function doGet() {
     return ContentService
       .createTextOutput(JSON.stringify({
         ok: false,
-        service: 'Coach Sam Pre-Test Receiver v2.0',
+        service: 'Coach Sam Pre-Test Receiver v2.5',
         sheetConnected: false,
-        message: 'ไม่สามารถเปิด Google Sheet ได้ กรุณาตรวจสอบสิทธิ์หรือ ID: ' + error.message
+        message: 'ไม่สามารถเปิด Google Sheet ได้: ' + error.message
       }))
       .setMimeType(ContentService.MimeType.JSON);
   }
@@ -153,14 +157,28 @@ function doGet() {
 function doPost(e) {
   let requestId = '';
   try {
-    const rawPayload = e && e.parameter && e.parameter.payload;
-    if (!rawPayload) throw new Error('ไม่พบข้อมูลแบบทดสอบ');
+    let rawPayload = '';
+    if (e && e.parameter && e.parameter.payload) {
+      rawPayload = e.parameter.payload;
+    } else if (e && e.postData && e.postData.contents) {
+      const contents = e.postData.contents;
+      if (contents.startsWith('payload=')) {
+        rawPayload = decodeURIComponent(contents.slice(8).replace(/\+/g, ' '));
+      } else {
+        rawPayload = contents;
+      }
+    }
+
+    if (!rawPayload) throw new Error('ไม่พบข้อมูลแบบทดสอบ (Empty payload)');
 
     const payload = JSON.parse(rawPayload);
     requestId = validateRequestId_(payload.requestId);
     const course = findCourse_(payload.courseCode);
     const submission = normalizeSubmission_(payload, course);
+
+    console.log('กำลังบันทึกข้อมูลหลักสูตร:', course.code, 'ผู้เรียน:', submission.fullName);
     const result = saveSubmission_(submission);
+    console.log('บันทึกผลสำเร็จ คะแนน:', submission.score);
 
     return postMessageResponse_({
       ok: true,
@@ -170,7 +188,7 @@ function doPost(e) {
       maxScore: PRETEST_CONFIG.questionCount
     });
   } catch (error) {
-    console.error(error && error.stack ? error.stack : error);
+    console.error('เกิดข้อผิดพลาดในการบันทึก:', error && error.stack ? error.stack : error);
     return postMessageResponse_({
       ok: false,
       requestId: requestId,
@@ -179,15 +197,22 @@ function doPost(e) {
   }
 }
 
+/**
+ * ค้นหา Google Sheet: เน้นชีตที่สคริปต์นี้ผูกอยู่ (Active) เป็นลำดับแรก
+ */
 function getSpreadsheet_() {
-  if (PRETEST_CONFIG.spreadsheetId) {
+  try {
+    const active = SpreadsheetApp.getActiveSpreadsheet();
+    if (active) return active;
+  } catch (e) {}
+
+  if (PRETEST_CONFIG.fallbackSpreadsheetId) {
     try {
-      return SpreadsheetApp.openById(PRETEST_CONFIG.spreadsheetId);
-    } catch (err) {
-      // หาก openById ติดสิทธิ์ ให้ลองดึง Active Spreadsheet
-    }
+      return SpreadsheetApp.openById(PRETEST_CONFIG.fallbackSpreadsheetId);
+    } catch (err) {}
   }
-  return SpreadsheetApp.getActiveSpreadsheet();
+
+  throw new Error('ไม่พบ Google Sheet ปลายทาง กรุณาเปิด Extensions > Apps Script จากสเปรดชีตเป้าหมาย');
 }
 
 function findCourse_(courseCode) {
@@ -251,17 +276,21 @@ function normalizeSubmission_(payload, course) {
   };
 }
 
+/**
+ * บันทึกข้อมูลลงทั้งแท็บรวม (Master) และแท็บแยกรายวิชา
+ */
 function saveSubmission_(submission) {
   const lock = LockService.getScriptLock();
   lock.waitLock(20000); // รอคิวได้สูงสุด 20 วินาที ป้องกันข้อมูลชนกัน
   try {
     const spreadsheet = getSpreadsheet_();
-    const sheet = getOrCreateCourseSheet_(spreadsheet, submission.course);
-    const lastRow = sheet.getLastRow();
+    const masterSheet = getOrCreateMasterSheet_(spreadsheet);
+    const courseSheet = getOrCreateCourseSheet_(spreadsheet, submission.course);
 
-    // ตรวจสอบ Submission ID ซ้ำ
-    if (lastRow > 1) {
-      const idRange = sheet.getRange(2, PRETEST_CONFIG.requestIdColumn, lastRow - 1, 1);
+    // ตรวจสอบ Submission ID ซ้ำจาก Master Sheet
+    const masterLastRow = masterSheet.getLastRow();
+    if (masterLastRow > 1) {
+      const idRange = masterSheet.getRange(2, PRETEST_CONFIG.requestIdColumn, masterLastRow - 1, 1);
       const existing = idRange.createTextFinder(submission.requestId)
         .matchEntireCell(true)
         .findNext();
@@ -287,12 +316,33 @@ function saveSubmission_(submission) {
       PRETEST_CONFIG.consentVersion
     ];
 
-    const rowNumber = Math.max(sheet.getLastRow() + 1, 2);
-    sheet.getRange(rowNumber, 1, 1, PRETEST_HEADERS.length).setValues([row]);
+    // บันทึกลง Master Sheet
+    const masterRowNumber = Math.max(masterSheet.getLastRow() + 1, 2);
+    masterSheet.getRange(masterRowNumber, 1, 1, PRETEST_HEADERS.length).setValues([row]);
+
+    // บันทึกลง แท็บรายวิชา
+    const courseRowNumber = Math.max(courseSheet.getLastRow() + 1, 2);
+    courseSheet.getRange(courseRowNumber, 1, 1, PRETEST_HEADERS.length).setValues([row]);
+
     return { duplicate: false };
   } finally {
     lock.releaseLock();
   }
+}
+
+/**
+ * สร้างแท็บ Master รวมทุกผลสอบ (แท็บแรกสุด)
+ */
+function getOrCreateMasterSheet_(spreadsheet) {
+  let sheet = spreadsheet.getSheetByName(PRETEST_CONFIG.masterSheetName);
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet(PRETEST_CONFIG.masterSheetName, 0);
+  }
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange(1, 1, 1, PRETEST_HEADERS.length).setValues([PRETEST_HEADERS]);
+    formatCourseSheet_(sheet, '#102a4e'); // สีกรมท่าเข้มพิเศษสำหรับแท็บรวม
+  }
+  return sheet;
 }
 
 function getOrCreateCourseSheet_(spreadsheet, course) {
@@ -301,18 +351,18 @@ function getOrCreateCourseSheet_(spreadsheet, course) {
 
   if (sheet.getLastRow() === 0) {
     sheet.getRange(1, 1, 1, PRETEST_HEADERS.length).setValues([PRETEST_HEADERS]);
-    formatCourseSheet_(sheet);
+    formatCourseSheet_(sheet, '#0c1c35');
   }
   return sheet;
 }
 
-function formatCourseSheet_(sheet) {
+function formatCourseSheet_(sheet, headerColor) {
   const header = sheet.getRange(1, 1, 1, PRETEST_HEADERS.length);
   header
     .setValues([PRETEST_HEADERS])
     .setFontWeight('bold')
     .setFontColor('#ffffff')
-    .setBackground('#0c1c35')
+    .setBackground(headerColor || '#0c1c35')
     .setWrap(true);
   sheet.setFrozenRows(1);
   sheet.setRowHeight(1, 40);
