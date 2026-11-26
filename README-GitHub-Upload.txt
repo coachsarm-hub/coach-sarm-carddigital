@@ -1,13 +1,16 @@
 COACH SAM — Digital Business Card
 
-ไฟล์สำหรับอัปโหลดขึ้น GitHub:
-- index.html (หน้าเว็บแบบไฟล์เดียว รวม CSS, JavaScript, รูปโปรไฟล์ และ QR LINE ไว้แล้ว)
+ไฟล์และโครงสร้างสำหรับอัปโหลดขึ้น GitHub:
+- index.html (หน้าเว็บหลัก มีสไตล์ CSS, สคริปต์ และระบบ Pre-Test)
+- images/ (โฟลเดอร์ภาพโปรไฟล์และ QR Code รองรับทั้ง WebP และ fallback PNG/JPG โหลดเร็วระดับต่ำกว่า 100 KB)
+- CoachSamPretest.gs (โค้ด Apps Script สำหรับผูกกับ Google Sheets ปลายทาง)
+- CoachSamPretest-ติดตั้ง.txt (คู่มือและ endpoint เชื่อมต่อ)
 
 อัปโหลดผ่านเว็บไซต์ GitHub:
 1. เปิด https://github.com/coachsarm-hub/coach-sarm-carddigital
-2. เลือก Add file > Upload files
-3. เลือก index.html แล้ว commit changes เข้าสู่ branch main
-4. หาก repository มี index.html เดิม ให้เลือกแทนที่ไฟล์เดิม
+2. หากอัปโหลดผ่านเว็บ: เลือก Add file > Upload files
+3. ลาก index.html และโฟลเดอร์ images/ ขึ้นไป แล้ว commit changes เข้าสู่ branch main
+(หรือใช้คำสั่ง git push จากเครื่อง หากตั้งค่า Personal Access Token / SSH เรียบร้อยแล้ว)
 
 เปิดใช้งาน GitHub Pages:
 1. เข้า Settings > Pages

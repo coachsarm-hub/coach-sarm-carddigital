@@ -3,8 +3,9 @@ Coach Sam Pre-Test → Google Sheets
 ปลายทางชีต
 https://docs.google.com/spreadsheets/d/1P8KFKRGPi4YklfihtVHX-nXwudjaHEtzpqmOBn8J1-Y/edit
 
-Web App ที่เชื่อมกับหน้าเว็บแล้ว
-https://script.google.com/macros/s/AKfycbyCxo26I7a0Jexd3yiuOYLJC23gLRixDcfn-uWbfNF4LwgJxEAj2CGc8mdYO6I_prw3/exec
+Web App ที่เชื่อมกับหน้าเว็บปัจจุบัน (Active Endpoint)
+https://script.google.com/macros/s/AKfycbxubVhErTAvxK9cvp8rLlYmLa9612mL_g8zFTjIwdIpSSycfWDeWjAAhJ71VDuIKnpu/exec
+(หากมีการ Deploy ใหม่ สามารถนำ URL ใหม่มาแทนที่ได้ทั้งในไฟล์นี้และที่ตัวแปร PRETEST_ENDPOINT ใน index.html)
 
 สิ่งที่หน้าเว็บทำ
 - มีปุ่มทำ Pre-Test ในหลักสูตรทั้ง 21 รายการ
@@ -20,6 +21,6 @@ https://script.google.com/macros/s/AKfycbyCxo26I7a0Jexd3yiuOYLJC23gLRixDcfn-uWbf
 หมายเหตุสำคัญ
 - การ Deploy แบบ Anyone ทำให้ endpoint รับข้อมูลจากสาธารณะได้ จึงควรเก็บ Google Sheet เป็นส่วนตัวและแชร์เฉพาะผู้ดูแลที่จำเป็น
 - สคริปต์ไม่เก็บ IP address และไม่ส่งข้อมูลส่วนบุคคลกลับไปยังหน้าเว็บ
-- คะแนนในรุ่นนี้คำนวณที่หน้าเว็บและส่งพร้อมคำตอบ ผู้ใช้ที่มีความรู้ด้านเทคนิคอาจแก้คะแนนก่อนส่งได้ หากจะใช้เป็นการวัดผลทางการ ควรปรับให้ Apps Script ตรวจเฉลยบนเซิร์ฟเวอร์
+- ระบบคำนวณคะแนนและตรวจเฉลยบน Apps Script (Server-side) จากชุดคำตอบ answers ที่ส่งมาจากหน้าเว็บ เพื่อความถูกต้องและปลอดภัย ป้องกันการดัดแปลงคะแนนจากเครื่องผู้ใช้
 - คำถามเป็นชุดประเมินพื้นฐานที่จัดตามหัวข้อหลักสูตร ชุดที่ไม่มีเอกสารหลักสูตรอ้างอิงควรให้ผู้สอนตรวจทานก่อนใช้งานจริง
 - หน้าเว็บฉบับแก้ไขถูกบันทึกและ commit ในเครื่องแล้ว แต่การ push ไป GitHub ถูกปฏิเสธเพราะข้อมูลยืนยันตัวตนที่ใช้ไม่มีสิทธิ์เขียน repository นี้

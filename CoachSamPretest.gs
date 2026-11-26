@@ -54,6 +54,13 @@ const PRETEST_COURSE_GROUP = Object.freeze({
   '0920014220405': 'analytics', '2220017320213': 'tourismAI', '0920224220116': 'google',
   '0920014220406': 'microsoftAI', '10120014220801': 'genAI', '10120014220504': 'law'
 });
+/**
+ * Answer keys by course group.
+ * In the question bank, option index 0 (Choice A) is authored as the correct answer.
+ * When rendered in index.html, choices are shuffled dynamically for display,
+ * but each radio button retains its originalIndex (0..3).
+ * Thus, originalIndex 0 corresponds to the correct answer.
+ */
 const PRETEST_ANSWER_KEYS = Object.freeze({
   project: Object.freeze([0,0,0,0,0,0,0,0,0,0]),
   aiCoding: Object.freeze([0,0,0,0,0,0,0,0,0,0]),
@@ -252,7 +259,7 @@ function saveSubmission_(submission) {
       submission.score,
       PRETEST_CONFIG.questionCount,
       Math.round(submission.score / PRETEST_CONFIG.questionCount * 100),
-      ...submission.answers.map(sheetSafeText_),
+      ...submission.answers.map(function(ans) { return ['A', 'B', 'C', 'D'][ans] || sheetSafeText_(ans); }),
       submission.requestId,
       PRETEST_CONFIG.consentVersion
     ];
