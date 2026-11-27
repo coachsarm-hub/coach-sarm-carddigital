@@ -467,7 +467,6 @@ const PRETEST_ENDPOINT='https://script.google.com/macros/s/AKfycbxPvKnJzBFR3BXCm
         .catch(() => renderEmpty('ไม่สามารถโหลดตารางรอบอบรมได้ชั่วคราว กรุณาดูผ่านปฏิทินรายเดือนหรือแจ้งความต้องการเรียนครับ'));
     })();
     /* Pre-Test UI for the Coach Sam digital card. Embedded into index.html. */
-    if (pretestPostForm) pretestPostForm.action = PRETEST_ENDPOINT;
     const PRETEST_GROUPS = {
       project: [
         ['วงจรโครงการพัฒนาซอฟต์แวร์โดยทั่วไปเริ่มจากอะไร', ['วางแผนโครงการ', 'ปิดโครงการ', 'ส่งมอบระบบ', 'บำรุงรักษา']],
@@ -675,6 +674,7 @@ const PRETEST_ENDPOINT='https://script.google.com/macros/s/AKfycbxPvKnJzBFR3BXCm
     const pretestModal = document.getElementById('pretestModal');
     const pretestFrame = document.getElementById('pretestResponseFrame');
     const pretestPostForm = document.getElementById('pretestPostForm');
+    if (pretestPostForm) pretestPostForm.action = PRETEST_ENDPOINT;
     const pretestPayloadField = document.getElementById('pretestPayload');
     const pretestStatus = document.getElementById('pretestStatus');
     let activePretest = null;
